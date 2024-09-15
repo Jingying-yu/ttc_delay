@@ -1,7 +1,7 @@
 #### Preamble ####
 # Purpose: Downloads and saves the data from FRED and 
 # Author: Sandy Yu
-# Date: 2 April 2024
+# Date: 15 September 2024
 # Contact: jingying.yu@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Research on whether the sources are trustworthy and consider which datasets are necessary
