@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from FRED and 
+# Purpose: Downloads data from OpenDataToronto and saves the data in csv format
 # Author: Sandy Yu
 # Date: 15 September 2024
 # Contact: jingying.yu@mail.utoronto.ca
@@ -9,20 +9,100 @@
 
 
 #### Workspace setup ####
-library(tidyverse)
-
+library(readxl)
+library(readr)
 
 #### Download data ####
-raw_exchange_rate <- read_csv(
-  file = "https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=1138&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=DEXCAUS&scale=left&cosd=1971-01-04&coed=2024-03-29&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Daily&fam=avg&fgst=lin&fgsnd=2020-02-01&line_index=1&transformation=lin&vintage_date=2024-04-02&revision_date=2024-04-02&nd=1971-01-04",
-  show_col_types = FALSE
-)
+#download files from OpenDataToronto, there is only .xlsx format availble
+#thus first download and read .xlsx then save as csv later
 
-#inauguration data is pulled from two different sources: US Census Bureau website & Frank LaRose Ohio Secretary of State website.
-#Due to difficulty in extraction of data, I have hand-extracted data from the two websites into a single csv file and uploaded it into the data/raw_data folder.
-# The inauguration dataset will be direcly read and cleaned using R, and the process will be in the scripts/02-data_cleaning.R script
+### Bus Data ###
+#2020
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/e271cdae-8788-4980-96ce-6a5c95bc6618/resource/e5f6e6cb-2b9f-4436-aab7-283e9460bc8f/download/ttc-bus-delay-data-2020.xlsx",
+             "inputs/data/downloaded_xlsx_format/bus_delay_2020.xlsx", mode = "wb")
+bus_delay_2020 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2020.xlsx")
+
+#2021
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/e271cdae-8788-4980-96ce-6a5c95bc6618/resource/94c11eb2-1465-47a2-b321-61f1e258f5a3/download/ttc-bus-delay-data-2021.xlsx",
+              "inputs/data/downloaded_xlsx_format/bus_delay_2021.xlsx", mode = "wb")
+bus_delay_2021 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2021.xlsx")
+
+#2022
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/e271cdae-8788-4980-96ce-6a5c95bc6618/resource/3b3c2673-5231-4aac-8b6a-dc558dce588c/download/ttc-bus-delay-data-2022.xlsx",
+              "inputs/data/downloaded_xlsx_format/bus_delay_2022.xlsx", mode = "wb")
+bus_delay_2022 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2022.xlsx")
+
+#2023
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/e271cdae-8788-4980-96ce-6a5c95bc6618/resource/10802a64-9ac0-4f2e-9538-04800a399d1e/download/ttc-bus-delay-data-2023.xlsx",
+              "inputs/data/downloaded_xlsx_format/bus_delay_2023.xlsx", mode = "wb")
+bus_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2023.xlsx")
+
+
+
+### Streetcar Data ###
+#2020
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/b68cb71b-44a7-4394-97e2-5d2f41462a5d/resource/71b8b735-8a89-45a9-afb0-3edc38b2fad9/download/ttc-streetcar-delay-data-2020.xlsx",
+              "inputs/data/downloaded_xlsx_format/streetcar_delay_2020.xlsx", mode = "wb")
+streetcar_delay_2020 <- read_excel("inputs/data/downloaded_xlsx_format/streetcar_delay_2020.xlsx")
+
+#2021
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/b68cb71b-44a7-4394-97e2-5d2f41462a5d/resource/ecc4f0a8-25e6-40d8-ae70-8006e38c4f9a/download/ttc-streetcar-delay-data-2021.xlsx",
+              "inputs/data/downloaded_xlsx_format/streetcar_delay_2021.xlsx", mode = "wb")
+streetcar_delay_2021 <- read_excel("inputs/data/downloaded_xlsx_format/streetcar_delay_2021.xlsx")
+
+#2022
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/b68cb71b-44a7-4394-97e2-5d2f41462a5d/resource/28547222-35fe-48b6-ac4b-ccc67d286393/download/ttc-streetcar-delay-data-2022.xlsx",
+              "inputs/data/downloaded_xlsx_format/streetcar_delay_2022.xlsx", mode = "wb")
+streetcar_delay_2022 <- read_excel("inputs/data/downloaded_xlsx_format/streetcar_delay_2022.xlsx")
+
+#2023
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/b68cb71b-44a7-4394-97e2-5d2f41462a5d/resource/472d838d-e41a-4616-a11b-585d26d59777/download/ttc-streetcar-delay-data-2023.xlsx",
+              "inputs/data/downloaded_xlsx_format/streetcar_delay_2023.xlsx", mode = "wb")
+streetcar_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/streetcar_delay_2023.xlsx")
+
+
+
+### Subway Data ###
+#2020
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/996cfe8d-fb35-40ce-b569-698d51fc683b/resource/1ba66ead-cddf-453d-859d-b349d3286f02/download/ttc-subway-delay-data-2020.xlsx",
+              "inputs/data/downloaded_xlsx_format/subway_delay_2020.xlsx", mode = "wb")
+subway_delay_2020 <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_2020.xlsx")
+
+#2021
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/996cfe8d-fb35-40ce-b569-698d51fc683b/resource/c6e4f5eb-6ed7-4db1-944f-87406faa5a09/download/ttc-subway-delay-data-2021.xlsx",
+              "inputs/data/downloaded_xlsx_format/subway_delay_2021.xlsx", mode = "wb")
+subway_delay_2021 <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_2021.xlsx")
+
+#2022
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/996cfe8d-fb35-40ce-b569-698d51fc683b/resource/441143ca-8194-44ce-a954-19f8141817c7/download/ttc-subway-delay-data-2022.xlsx",
+              "inputs/data/downloaded_xlsx_format/subway_delay_2022.xlsx", mode = "wb")
+subway_delay_2022 <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_2022.xlsx")
+
+#2023
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/996cfe8d-fb35-40ce-b569-698d51fc683b/resource/2fbec48b-33d9-4897-a572-96c9f002d66a/download/ttc-subway-delay-data-2023.xlsx",
+              "inputs/data/downloaded_xlsx_format/subway_delay_2023.xlsx", mode = "wb")
+subway_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_2023.xlsx")
+
+
 
 
 #### Save data ####
-write_csv(x = raw_exchange_rate, file ="data/raw_data/raw_exchange_rate.csv") 
+
+### Bus Data ###
+write_csv(x = bus_delay_2020, file ="inputs/data/raw_csv/bus_delay_2020.csv")
+write_csv(x = bus_delay_2021, file ="inputs/data/raw_csv/bus_delay_2021.csv")
+write_csv(x = bus_delay_2022, file ="inputs/data/raw_csv/bus_delay_2022.csv")
+write_csv(x = bus_delay_2023, file ="inputs/data/raw_csv/bus_delay_2023.csv")
+
+### Streetcar Data ###
+write_csv(x = streetcar_delay_2020, file ="inputs/data/raw_csv/streetcar_delay_2020.csv")
+write_csv(x = streetcar_delay_2021, file ="inputs/data/raw_csv/streetcar_delay_2021.csv")
+write_csv(x = streetcar_delay_2022, file ="inputs/data/raw_csv/streetcar_delay_2022.csv")
+write_csv(x = streetcar_delay_2023, file ="inputs/data/raw_csv/streetcar_delay_2023.csv")
+
+### Subway ###
+write_csv(x = subway_delay_2020, file ="inputs/data/raw_csv/subway_delay_2020.csv")
+write_csv(x = subway_delay_2021, file ="inputs/data/raw_csv/subway_delay_2021.csv")
+write_csv(x = subway_delay_2022, file ="inputs/data/raw_csv/subway_delay_2022.csv")
+write_csv(x = subway_delay_2023, file ="inputs/data/raw_csv/subway_delay_2023.csv")
 
