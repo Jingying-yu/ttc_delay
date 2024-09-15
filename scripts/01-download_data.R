@@ -5,7 +5,6 @@
 # Contact: jingying.yu@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Research on whether the sources are trustworthy and consider which datasets are necessary
-# Please see the below notes on source of inauguration raw data.
 
 
 #### Workspace setup ####
