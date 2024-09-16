@@ -9,55 +9,41 @@
 
 #### Workspace setup ####
 library(tidyverse)
-library(readr)
+library(janitor)
 library(readxl)
+library(readr)
 
 
 #### Read data ####
-bus_delay_2020 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2020.xlsx")
-bus_delay_2021 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2021.xlsx")
-bus_delay_2022 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2022.xlsx")
 bus_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2023.xlsx")
-
-streetcar_delay_2020 <- read_csv("inputs/data/raw_csv/streetcar_delay_2020.csv")
-streetcar_delay_2021 <- read_csv("inputs/data/raw_csv/streetcar_delay_2021.csv")
-streetcar_delay_2022 <- read_csv("inputs/data/raw_csv/streetcar_delay_2022.csv")
-streetcar_delay_2023 <- read_csv("inputs/data/raw_csv/streetcar_delay_2023.csv")
-
-subway_delay_2020 <- read_csv("inputs/data/raw_csv/subway_delay_2020.csv")
-subway_delay_2021 <- read_csv("inputs/data/raw_csv/subway_delay_2021.csv")
-subway_delay_2022 <- read_csv("inputs/data/raw_csv/subway_delay_2022.csv")
-subway_delay_2023 <- read_csv("inputs/data/raw_csv/subway_delay_2023.csv")
+streetcar_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/streetcar_delay_2023.xlsx")
+subway_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_2023.xlsx")
 
 
 #### Clean data ####
 bus_delay <-
-  rbind(bus_delay_2021, bus_delay_2022, bus_delay_2023)
-
-head(bus_delay)
-
-
-cleaned_inauguration <-
-  raw_inauguration |>
+  bus_delay_2023 |>
   janitor::clean_names() |>
-  filter(inauguration_date >= "1974-08-09") |>
-  select(president, party, inauguration_date) |>
-  mutate(change_party = as.integer(lag(party) != party & !is.na(lag(party)))) |>
-  tidyr::drop_na()
+  mutate(date = as.Date(date, format = "%Y-%m-%d"))
 
+streetcar_delay <-
+  streetcar_delay_2023 |>
+  janitor::clean_names() |>
+  mutate(date = as.Date(date, format = "%Y-%m-%d"))
 
-
-
+subway_delay <-
+  subway_delay_2023 |>
+  janitor::clean_names() |>
+  mutate(date = as.Date(date, format = "%Y-%m-%d")) |>
+  rename(location = station)
 
 
 
 
 #### Save data ####
-write_csv(cleaned_exchange_rate, "data/analysis_data/cleaned_exchange_rate.csv")
-write_parquet(cleaned_exchange_rate, "data/analysis_data/cleaned_exchange_rate.parquet")
+write_csv(bus_delay, "inputs/data/cleaned_data/bus_delay.csv")
 
-write_csv(cleaned_inauguration, "data/analysis_data/cleaned_inauguration.csv")
-write_parquet(cleaned_inauguration, "data/analysis_data/cleaned_inauguration.parquet")
+write_csv(streetcar_delay, "inputs/data/cleaned_data/streetcar_delay.csv")
 
-write_csv(exchange_inaug, "data/analysis_data/exchange_inaug.csv")
-write_parquet(exchange_inaug, "data/analysis_data/exchange_inaug.parquet")
+write_csv(subway_delay, "inputs/data/cleaned_data/subway_delay.csv")
+
