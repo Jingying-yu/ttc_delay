@@ -10,13 +10,14 @@
 #### Workspace setup ####
 library(tidyverse)
 library(readr)
+library(readxl)
 
 
 #### Read data ####
-bus_delay_2020 <- read_csv("inputs/data/raw_csv/bus_delay_2020.csv")
-bus_delay_2021 <- read_csv("inputs/data/raw_csv/bus_delay_2021.csv")
-bus_delay_2022 <- read_csv("inputs/data/raw_csv/bus_delay_2022.csv")
-bus_delay_2023 <- read_csv("inputs/data/raw_csv/bus_delay_2023.csv")
+bus_delay_2020 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2020.xlsx")
+bus_delay_2021 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2021.xlsx")
+bus_delay_2022 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2022.xlsx")
+bus_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2023.xlsx")
 
 streetcar_delay_2020 <- read_csv("inputs/data/raw_csv/streetcar_delay_2020.csv")
 streetcar_delay_2021 <- read_csv("inputs/data/raw_csv/streetcar_delay_2021.csv")
@@ -30,12 +31,10 @@ subway_delay_2023 <- read_csv("inputs/data/raw_csv/subway_delay_2023.csv")
 
 
 #### Clean data ####
-cleaned_exchange_rate <-
-  raw_exchange_rate |>
-  janitor::clean_names() |>
-  filter(date >= "1969-01-20" & dexcaus != ".") |> 
-  rename(exchange_rate = dexcaus) |> mutate(exchange_rate = as.numeric(exchange_rate)) |>
-  tidyr::drop_na()
+bus_delay <-
+  rbind(bus_delay_2021, bus_delay_2022, bus_delay_2023)
+
+head(bus_delay)
 
 
 cleaned_inauguration <-
