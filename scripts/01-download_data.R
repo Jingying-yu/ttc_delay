@@ -12,7 +12,7 @@
 library(readxl)
 library(readr)
 
-#### Download data ####
+#### Download & Save data ####
 #download files from OpenDataToronto, there is only .xlsx format availble
 #thus first download and read .xlsx then save as csv later
 
@@ -38,7 +38,8 @@ download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/996cfe8d-
               "inputs/data/downloaded_xlsx_format/subway_delay_2023.xlsx", mode = "wb")
 subway_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_2023.xlsx")
 
+## Subway Delay Code ##
 
-
-
-#### Save data ####
+download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/996cfe8d-fb35-40ce-b569-698d51fc683b/resource/3900e649-f31e-4b79-9f20-4731bbfd94f7/download/ttc-subway-delay-codes.xlsx", 
+              "inputs/data/downloaded_xlsx_format/subway_delay_code.xlsx", mode = "wb")
+subway_delay_code <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_code.xlsx")
