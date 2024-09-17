@@ -2,22 +2,24 @@
 
 ## Overview
 
-Fluctuation of exchange rate can be attributed to multiple different factors. This paper will focus on one particular aspect that contributes to the change in USD exchange rate: the expectation of the populous on the future of the United States, perceived through the results of the US Presidential Election. The paper will examine relationship between US presidential result announcement and USD exchange rate fluctuation.
+TTC Service is one of the most popular way to travel around downtown Toronto, but varying levels of delay occurs with different types of TTC service. This paper will focus on analyzing 2023's TTC service delay magnitude and advise the reader on which TTC service to ride on at different days of the week, and different hours of the day using concrete quantitative analysis.
 
-Exchange Rate between CAD & USD gathered from [FRED](https://fred.stlouisfed.org/series/DEXCAUS) 
+TTC Bus Delay data can be accessed [here](https://open.toronto.ca/dataset/ttc-bus-delay-data/)
 
-US Presidential Election Result data gathered from [United States Census Bureau](https://www.census.gov/content/dam/Census/library/visualizations/2021/comm/inauguration-day.pdf), cross checked with data from [Frank LaRose Ohio Secretary of State](https://www.ohiosos.gov/elections/election-results-and-data/historical-election-comparisons/presidents-of-the-united-states-of-america/) website to ensure accuracy.
+TTC Streetcar Delay data can be accessed [here](https://open.toronto.ca/dataset/ttc-streetcar-delay-data/)
+
+TTC Subway Delay data can be accessed [here](https://open.toronto.ca/dataset/ttc-subway-delay-data/)
 
 ## File Structure
 
 The repo is structured as:
 
--   `data/raw_data` contains the raw data as obtained from FRED, United States Census Bureau and Frank LaRose Ohio Secretary of State.
--   `data/analysis_data` contains the cleaned dataset that was constructed.
--   `model` contains fitted models.
+-   `inputs/sketch` contains the author's visualized thought of how to proceed with the acquired data, in hand-drawn format
+-   `inputs/data/downloaded_xlsx_format` contains the raw data as obtained from OpenDataToronto
+-   `inputs/data/cleaned_data` contains the cleaned dataset that constructed for final analysis in the paper content.
+-   `inputs/llms` contains chat history with Large Language Model ChatGPT 4o, which was used to assist the code construct througout the paper
 -   `other` contains relevant literature, details about LLM chat interactions, and sketches.
--   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
--   `paper/datasheet` contains the datasheet for the final dataset used for analysis.
+-   `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
 -   `scripts` contains the R scripts used to simulate, download and clean data.
 
 ## Statement on LLM usage
