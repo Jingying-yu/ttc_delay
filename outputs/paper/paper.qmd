@@ -1,6 +1,6 @@
 ---
-title: "Efforts to Code Calls created a Positive Impact in Reducing Toronto's Homeless Death Counts"
-subtitle: "Analysis on the Correlations between the efforts made by Toronto's Central Intake Line and local Homeless Death Counts"
+title: "Choosing TTC x Provides the Most Time Stability during Rush Hours"
+subtitle: "Analysis on the Delay Magnitude of different TTC Services"
 author: 
   - Sandy Yu
 thanks: "Code and data are available at: https://github.com/Jingying-yu/central_intake_calls_and_homeless_death_count.git"
