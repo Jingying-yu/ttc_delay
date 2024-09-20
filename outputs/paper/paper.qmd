@@ -29,26 +29,18 @@ library(ggplot2)
 
 # Introduction
 
-The City of Toronto has been consistently providing funding and staff in an effort to reduce the active homeless population within its governing district. One of the key aspects of reducing homelessness is the assignment of sheltering space. Amongst numerous city efforts, the 24/7 helpline — Toronto Central Intake Line — was created to offer referrals to emergency shelters, sleeping accommodations, and provide general information about homelessness and prevention. [@Central_Intake_Call]. Starting in 2020, detailed data about the Central Intake Line became available on the OpenDataToronto portal [@OpenDataToronto].
 
-In this paper, we want to measure the magnitude of positive impact created by the Central Intake Line in relation to the monthly cumulative number of deaths in the homeless community. Using Central Intake Call Wrap-up Codes data [@Central_Intake_Call] from OpenDataToronto [@OpenDataToronto], three different aspects of the Central Intake Line efforts were isolated: total calls coded, referral to shelter, and homelessness prevention information provided. These three key aspects were measured against the monthly cumulative Deaths of People Experiencing Homelessness Data [@Homeless_Death_Count] documented by the Toronto Public Health [@TPH]. The analyses yielded an inverse correlation between the number of calls coded and the homeless death count, and no discernible correlations between coded call types of interest and the monthly homeless death counts.
-
-Analyses and findings in this paper are structured into several sections: @sec-data -- Data, @sec-result -- Result, @sec-discussion -- Discussion, and @sec-conclusion -- Conclusion. The Data section examines all datasets and variables kept for analysis, followed by an explanation of their data cleaning processes. The Result section focuses on visualizing and presenting the correlation between variables of interest. The Discussion sections further evaluate the meaning behind the correlation presented in the previous section. Lastly, the arguments presented in all previous sections are wrapped up by the Conclusion section which summarizes the main findings in this paper.
 
 
 
 # Data {#sec-data}
 
-All data used in this paper are obtained through OpenDataToronto Portal [@OpenDataToronto]. Two different datasets: Central Intake Call Wrap-Up Codes Data [@Central_Intake_Call] and Deaths of People Experiencing Homelessness[@Homeless_Death_Count], are retrieved to analyze the correlation between different factors of Toronto’s Central Call Line efforts and the monthly cumulative death counts of homeless individuals in Toronto. Data was cleaned and analyzed using the open source statistical programming language R [@citeR] and supporting packages tidyverse [@tidyverse], janitor [@janitor], dplyr [@dplyr], lubridate [@lubridate], zoo [@citeZoo], ggplot2 [@ggplot2], and knitr [@knitr]. Detailed description of each dataset can be found in the subsections below.
 
 
-## Central Intake Call Wrap-Up Codes
 
-On the OpenDataToronto portal, there are several datasets that reflect the City’s effort to shelter the local homeless population. The Central Intake Call Wrap-Up Codes Dataset [@Central_Intake_Call], stored in the Central Intake Calls Catalogue [@Central_Intake_Call], is one of the freshest and most detailed. Data was stored and published by the Shelter, Support & Housing Administration since November of 2020 and refreshes on a monthly basis. The latest refresh occurred on January 15th, 2024.
+## TTC Bus Delay
 
-The data set provides a daily summary of the number of calls received, the number of calls classified into distinct wrap-up codes by the nature of the issue, and a count of calls under each wrap-up code. One of the example wrap-up codes in the original data set was: *Code 1A - Referral to a Sleeping/Resting Space*. The original data set includes 13 distinct wrap-up codes; only two codes, *Code 1A — Referral to a Sleeping/Resting Space* and *Code 2C — Information - Homelessness & Prevention Services*, were chosen for our analysis. Code 1A and Code 2C are best suited as measurements for positive impact the Central Intake Line could provide because they provide a count of the number of callers provided with directions or advice. Other non-suitable wrap-up codes include: *Code 1D - Declined Shelter/Resting Space*, *Code 4B - Disconnected - No Outcome*, etc.
 
-The final dataset only includes data before July of 2023. The rationalization behind the filtering and summarizing actions will be explained in @sec-data-diff-datasets.
 
 ```{r}
 #| label: tbl-monthly-calls
@@ -63,13 +55,8 @@ knitr::kable(sample_central_intake_call, col.names = c("Month", "Calls Coded", "
 ```
 
 
-## Deaths of People Experiencing Homelessness
+## TTC Streetcar Delay
 
-The Deaths of People Experiencing Homelessness Dataset [@Homeless_Death_Count] contains monthly cumulative records of homeless deaths. The dataset is published by Toronto Public Health [@TPH]. The earliest data record started in January of 2017, and the latest record ends in June of 2023.
-
-The original dataset contains three columns: *Year of death*, *Month of death*, and *Count*. After careful inspection of raw data, any rows that containing an “unknown” value are excluded. Although this action created a source of error in future analyses, this is still a necessary step because we are plotting death counts against a timeline. 
-
-Final dataset only includes data from November 2020 to June 2023 (@tbl-death-count). The rationalization behind the filtering will be explained in @sec-data-diff-datasets.
 
 ```{r}
 #| label: tbl-death-count
@@ -84,12 +71,8 @@ knitr::kable(sample_homeless_death_counts, col.names = c("Last Day of Month", "D
 ```
 
 
-## Using Data from Different Datasets {#sec-data-diff-datasets}
-During the data cleaning process, code chunks are written to ensure that both the Central Intake Call Wrap-Up Codes Dataset [@Central_Intake_Call] and the Deaths of People Experiencing Homelessness Dataset [@Homeless_Death_Count] are filtered to include only data between 1st November, 2020 to 30st June, 2023. 
+## TTC Subway Delay
 
-The decision to only include this time period is reached by taking the common time period between the two datasets. In the latest refresh, the Central Intake Call Wrap-Up Codes Dataset [@Central_Intake_Call] begins on 3rd November, 2020 and end on 31st December, 2023; whereas the Deaths of People Experiencing Homelessness Dataset [@Homeless_Death_Count] begins on January of 2017 and ends on June 2023.
-
-The ultimate purpose of taking the common time period is to ensure that we can plot variables of interest in the two datasets onto the same graph. Thus a combined dataset that kept the variables of interest in both datasets is created (@tbl-combined).
 ```{r}
 #| label: tbl-combined
 #| tbl-cap: Sample of Combined dataset
@@ -103,15 +86,16 @@ sample_combined_data <- head(combined_data, n = 3)
 knitr::kable(sample_combined_data, col.names = c("Month", "Calls Coded", "Referral to Shelter", "Homelessness Prevention Info", "Death Count"), align = c("l","c", "c", "c","c"))
 ```
 
+## TTC Delay Comparision
+
+
 
 # Results {#sec-result}
 
-Between November 2020 and June 2023, there were a total of 522 cases of homeless death recorded in Toronto. The mean monthly death count is 16.3125, with a minimum of 8 recorded cases and a maximum of 26 recorded cases per month. The overall trend of homeless death cases is downward-sloping.
 
-## Number of Calls Coded & Homeless Death Count
-The first graph (@fig-coded) maps the overall trend of homeless death over time, represented by the blue line, against the adjusted cumulative number of calls coded per month. The value of calls coded per month, represented by the red line, is divided by 1000 for easier comparison against the death count. Original values are too big for any meaningful comparison.
 
-The red line in the graph visualizes the number of calls coded per month obtained from the Central Intake Call Wrap-Up Codes Dataset [@Central_Intake_Call] between November 2020 and June 2023. Throughout the time period, there were a total of 474515 calls coded, the mean monthly number of calls coded is 14828.59. The minimum number of calls coded per month was 8367, and the maximum number of calls coded was 30520. We can see a positive growth in the number of calls being coded per month over time (@fig-coded).
+## Highest Number of Total Delayed
+
 ```{r}
 #| label: fig-coded
 #| fig-cap: Visualization to show correlation between number of Calls Coded (represented by the red line) and Homeless Death Counts (represented by the blue line)
@@ -133,10 +117,10 @@ combined_data|> ggplot(mapping = aes(x = Month, y = Death_Count)) +
 #still need to add a legend or label, but I haven't yep figured out how
 ```
 
-## Number of Callers Referred to Shelter & Homeless Death Count
-The second graph (@fig-referred) maps the overall trend of homeless death over time, represented by the blue line, against the adjusted cumulative number of callers referred to shelters per month. The number of callers referred to shelters per month, represented by the purple line, is divided by 100 for easier comparison against the death count. Original values are too big for any meaningful comparison.
+## Most Delayed during Weekday
+Define Rush Hours
 
-The number of callers referred to shelters per month obtained from the Central Intake Call Wrap-Up Codes Dataset [@Central_Intake_Call] between November 2020 and June 2023 is represented by the blue line in @fig-referred. Throughout the time period, there were a total of 44760 callers referred, the mean monthly number of callers referred was 1398.75. The minimum number of callers referred per month was 456, and the maximum number of callers referred was 2192. We can observe a negative growth in the number of callers referred per month over time (@fig-referred).
+Present Results During Rush Hours & at Off-Peak Hours
 ```{r}
 #| label: fig-referred
 #| fig-cap: Visualization to show correlation between number of callers referred to shelter (represented by the purple line) and Homeless Death Counts (represented by the blue line)
@@ -159,10 +143,9 @@ combined_data|> ggplot(mapping = aes(x = Month, y = Death_Count)) +
 ```
 
 
-## Number of Callers given information on Homelessness Prevention & Homeless Death Count
-The third graph (@fig-informed) maps the overall trend of homeless death over time, represented by the blue line, against the adjusted monthly cumulative number of callers provided with information about homelessness prevention. The number of callers provided with information, represented by the dark green line, is divided by 100 for easier comparison against the death count. Original values are too big for any meaningful comparison.
 
-The number of callers provided with information on homelessness prevention per month obtained from the Central Intake Call Wrap-Up Codes Dataset [@Central_Intake_Call] between November 2020 and June 2023 is represented by the dark green line in @fig-informed. Throughout the time period, there were a total of 58333 callers provided with information, the mean monthly number of callers provided with information was 1822.906. The minimum number of callers provided with information per month was 1110, and the maximum number of callers provided with information was 2500. We can observe an initial negative growth followed by a positive growth in the number of callers provided with information per month over time (@fig-informed).
+## Most Delayed during Weekends
+
 ```{r}
 #| label: fig-informed
 #| fig-cap: Visualization to show correlation between number of callers given information on homelessness prevention (represented by the dark green line) and Homeless Death Counts (represented by the blue line)
@@ -184,29 +167,36 @@ combined_data|> ggplot(mapping = aes(x = Month, y = Death_Count)) +
 #still need to add a legend or label, but I haven't yep figured out how
 ```
 
+## Most Popular Delay Reasons
+- 1 table for all three services
+
+## Most Popular Delayed Vehicles
+- 1 table for all three services
 
 
 
 # Discussion {#sec-discussion}
 
-## Correlation between number of Calls Coded & Homeless Death Counts {#sec-relation-calls}
-Based on @fig-coded, there seems to be an inverse relationship between the directions of change for the homeless death count trend over time, the blue line, and the monthly cumulative calls coded represented by the red lines. When the red line moves upward, the blue line moves down. This inverse relationship indicates a negative correlation between the two variables. A negative correlation between these two variables implies that the efforts the Central Intake Line placed into coding calls has created a positive impact in reducing homeless death in Toronto. 
+## TTC Service Prices {#sec-price}
+- one-fare
 
-## Correlation between number of Coded Calls of Interest & Homeless Death Counts
-According to the @fig-referred and @fig-informed, both the number of callers referred to shelters (represented by the purple line in @fig-referred) and the number of callers provided with information on homelessness prevention (represented by the dark green line in @fig-informed) change in the same direction as the monthly cumulative homeless death count. Through pure visual observation, a positive correlation between homeless death count to each of the variables would be found. This relationship would imply that the Central Intake Line [@Central_Intake_Call] has actually created a negative impact in reducing the homeless death count in Toronto by referring callers to shelter and providing callers with information on homelessness prevention. However, the magnitude of fluctuation for both the purple and dark green line are very large throughout the entire time period. Especially from the beginning of 2022 to the end of 2023 for the purple line. Due to the magnitude of fluctuation for both lines, we cannot responsibly conclude any causal relationship between the two variables by pure observation of the trends. We can only say that the general trend of the purple and dark green line moves in the same direction as the homeless death count trend. Therefore, no meaningful correlation between the two variables were concludable using only the Central Intake Call Wrap-Up Codes Dataset [@Central_Intake_Call] and Deaths of People Experiencing Homelessness Dataset [@Homeless_Death_Count] obtained from OpenDataToronto portal [@OpenDataToronto]. However, this result does not imply that no correlation between variables exists in the real world. It is completely plausible that correlation between the two variables can be found if more detailed data were provided, or more advanced statistical models were used for analysis.
+## Correlation between Delay and Direction of Travel
+- Financial District
+- Midtown Direction
 
+## TTC Service Amenities
+- The PATH (for financial district)
+- AC in Summer & Winter
 
 ## Errors in analysis, Limitations and Next Steps
 
-Potential errors exist in the final datasets used for analyses. During the data cleaning process,  if rows in the Deaths of People Experiencing Homelessness Dataset [@Homeless_Death_Count] contain “Unknown” as a Month or Year value, then these rows are filtered out of the final dataset used for relationship analyses. This filtering action would cause an inaccuracy in the total cumulation of the homeless death count; however, incoherence of dates would occur if these rows were left inside the dataset. Another potential error could occur even before I download datasets from OpenDataToronto [@OpenDataToronto]. We cannot rule out the possibility of human error during the data inputting process before the data is submitted to the OpenDataToronto portal [@OpenDataToronto].
 
-Limitations to this analysis exist for a few reasons. Firstly, each Central Intake Line staff has their own understanding about which code they should assign their calls. We have no way of verifying whether the staff have categories their calls correctly. Secondly, the staff do not have enough time to conduct repeated follow-ups with each caller they were assigned to. We have no way of verifying what percentage of callers referred to a shelter actually got there. Lastly, we do not have enough information to sort the coded calls by demography. A subset of data that sorts the homeless death count by demography exists in the Deaths of People Experiencing Homelessness Catalogue [@Homeless_Death_Count], if more information about the demography of the callers were provided, more information about the relationship between variables of interest might be found. Further analysis on homeless death counts by demography can be conducted based on shelter data that contains demographic values.
 
 
 
 # Conclusion {#sec-conclusion}
 
-This paper investigated the magnitude of impact created by the Central Intake Line in relation to the monthly cumulative number of deaths in the homeless community. Variables of interest such as: calls coded, number of callers referred to shelter, number of callers provided with information on homelessness prevention, and homeless death count, were obtained from the Central Intake Call Wrap-Up Codes Dataset [@Central_Intake_Call] and the Deaths of People Experiencing Homelessness Dataset [@Homeless_Death_Count] stored in the OpenDataToronto portal [@OpenDataToronto]. Statistical analyses yielded a negative correlation between the number of calls coded and the homeless death count, which implies a positive impact in reducing homeless death in Toronto. Other variables, such as number of callers referred to shelter and number of callers provided with information on homelessness prevention, yielded no meaningful correlation to the homeless death count. Therefore we cannot conclude the magnitude of their contribution to the reduction of homeless death count. Overall, we can only conclude that the effort of Coding Calls have a positive impact on reducing homeless death in Toronto. Further analysis on homeless death counts by demography can be conducted based on shelter data that contains demographic values.
+
 
 
 
