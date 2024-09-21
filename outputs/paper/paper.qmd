@@ -3,10 +3,10 @@ title: "Choosing TTC x Provides the Most Time Stability during Rush Hours"
 subtitle: "Analysis on the Delay Magnitude of different TTC Services"
 author: 
   - Sandy Yu
-thanks: "Code and data are available at: https://github.com/Jingying-yu/central_intake_calls_and_homeless_death_count.git"
+thanks: "Code and data are available at: https://github.com/Jingying-yu/ttc_delay.git"
 date: today
 date-format: long
-abstract: "For the City of Toronto, the physical well-being of its local homeless population has always been one of its primary focuses. Numerous social efforts, funded by the City, were made in attempts to reduce the death rate of the local homeless population. In order to visualize the magnitude of social impact enforced by the City of Toronto, analyses were performed to investigate the correlation between the efforts made by the staff of Toronto’s Central Intake Line and the monthly homeless death counts between November 2020 to June 2023 using data from OpenDataToronto. Staff efforts such as the number of calls coded, number of referral to shelter, and number of information for homelessness prevention, were documented and compared against the monthly homeless death counts. An inverse correlation is found between the number of calls coded and the homeless death count. No discernible correlations were found between coded call types of interest and the monthly homeless death counts."
+abstract: ""
 format: pdf
 toc: true
 number-sections: true
@@ -31,6 +31,7 @@ library(ggplot2)
 
 
 
+Analyses and findings in this paper are structured into several sections: @sec-data -- Data, @sec-results -- Results, and @sec-discussion -- Discussion. The Data section introduces the context of the datasets and examines all datasets and variables kept for analysis. The Result section focuses on visualizing and presenting the data results in Data section. The Discussion section further evaluate the implications behind the data results presented in the previous section, expands the topic beyond pure data, and touches on any weaknesses and next steps.
 
 
 # Data {#sec-data}
@@ -43,15 +44,15 @@ library(ggplot2)
 
 
 ```{r}
-#| label: tbl-monthly-calls
-#| tbl-cap: Sample of Cleaned Central Intake Call Wrap-up Codes Dataset
+#| label: tbl-bus-delay
+#| tbl-cap: Sample of Cleaned TTC Bus Delay Dataset
 #| echo: false
 
-central_intake_call <- read.csv(here::here("outputs/data/cleaned_central_intake_call.csv"))
+bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus_delay.csv"))
 
-sample_central_intake_call <- head(central_intake_call)
+sample_bus_delay <- head(bus_delay, n = 3)
 
-knitr::kable(sample_central_intake_call, col.names = c("Month", "Calls Coded", "Referral to Shelter", "Homelessness Prevention Info"), align = c("l", "c", "c", "c"))
+knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Location", "Cause of Delay", "Min Delayed", "Min Gap", "Direction", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
 ```
 
 
@@ -59,31 +60,46 @@ knitr::kable(sample_central_intake_call, col.names = c("Month", "Calls Coded", "
 
 
 ```{r}
-#| label: tbl-death-count
-#| tbl-cap: Sample of Cleaned Deaths of People Experiencing Homelessness Dataset
+#| label: tbl-streetcar-delay
+#| tbl-cap: Sample of Cleaned TTC Streetcar Delay Dataset
 #| echo: false
 
-homeless_death_counts <- read.csv(here::here("outputs/data/cleaned_homeless_death_counts.csv"))
+streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar_delay.csv"))
 
-sample_homeless_death_counts <- head(homeless_death_counts, n = 3)
+sample_streetcar_delay <- head(streetcar_delay, n = 3)
 
-knitr::kable(sample_homeless_death_counts, col.names = c("Last Day of Month", "Death Count"), align = c("c", "c"))
+knitr::kable(sample_streetcar_delay, col.names = c("Date", "Line", "Time", "Day", "Location", "Cause of Delay", "Min Delayed", "Min Gap", "Bound", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
 ```
 
 
 ## TTC Subway Delay
 
+### Delay Code
 ```{r}
-#| label: tbl-combined
-#| tbl-cap: Sample of Combined dataset
+#| label: tbl-subway-code
+#| tbl-cap: Sample of TTC Subway Delay Code
 #| echo: false
+#| message: false
 
-combined_data <- read_csv(here::here("outputs/data/combined_data.csv"),
-                          show_col_types = FALSE)
+subway_delay_code <- read.csv(here::here("inputs/data/cleaned_data/subway_delay_code.csv"))
 
-sample_combined_data <- head(combined_data, n = 3)
+sample_subway_delay_code <- head(subway_delay_code, n = 3)
 
-knitr::kable(sample_combined_data, col.names = c("Month", "Calls Coded", "Referral to Shelter", "Homelessness Prevention Info", "Death Count"), align = c("l","c", "c", "c","c"))
+knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description"), align = c("c","c"))
+```
+
+### Delay Data
+```{r}
+#| label: tbl-subway-delay
+#| tbl-cap: Sample of Cleaned TTC Subway Delay Dataset
+#| echo: false
+#| message: false
+
+subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway_delay.csv"))
+
+sample_subway_delay <- head(subway_delay, n = 3)
+
+knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Location", "Delay Code", "Min Delayed", "Min Gap", "Bound", "Line", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
 ```
 
 ## TTC Delay Comparision
