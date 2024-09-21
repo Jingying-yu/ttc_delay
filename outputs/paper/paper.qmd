@@ -17,13 +17,19 @@ bibliography: references.bib
 #| include: false
 #| warning: false
 #| message: false
-
+# load librarys and datasets
 library(tidyverse)
 library(dplyr)
 library(lubridate)
 library(zoo)
 library(knitr)
 library(ggplot2)
+
+bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus_delay.csv"))
+streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar_delay.csv"))
+subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway_delay.csv"))
+subway_delay_code <- read.csv(here::here("inputs/data/cleaned_data/subway_delay_code.csv"))
+
 ```
 
 
@@ -48,8 +54,6 @@ Analyses and findings in this paper are structured into several sections: @sec-d
 #| tbl-cap: Sample of Cleaned TTC Bus Delay Dataset
 #| echo: false
 
-bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus_delay.csv"))
-
 sample_bus_delay <- head(bus_delay, n = 3)
 
 knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Location", "Cause of Delay", "Min Delayed", "Min Gap", "Direction", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
@@ -63,8 +67,6 @@ knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Loc
 #| label: tbl-streetcar-delay
 #| tbl-cap: Sample of Cleaned TTC Streetcar Delay Dataset
 #| echo: false
-
-streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar_delay.csv"))
 
 sample_streetcar_delay <- head(streetcar_delay, n = 3)
 
@@ -81,8 +83,6 @@ knitr::kable(sample_streetcar_delay, col.names = c("Date", "Line", "Time", "Day"
 #| echo: false
 #| message: false
 
-subway_delay_code <- read.csv(here::here("inputs/data/cleaned_data/subway_delay_code.csv"))
-
 sample_subway_delay_code <- head(subway_delay_code, n = 3)
 
 knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description"), align = c("c","c"))
@@ -94,8 +94,6 @@ knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description")
 #| tbl-cap: Sample of Cleaned TTC Subway Delay Dataset
 #| echo: false
 #| message: false
-
-subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway_delay.csv"))
 
 sample_subway_delay <- head(subway_delay, n = 3)
 
@@ -113,52 +111,68 @@ knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Location
 ## Highest Number of Total Delayed
 
 ```{r}
-#| label: fig-coded
-#| fig-cap: Visualization to show correlation between number of Calls Coded (represented by the red line) and Homeless Death Counts (represented by the blue line)
+#| label: fig-total-delay
+#| fig-cap: Visualization to show the TTC service that has the highest number of delays in year 2023
 #| echo: false
 #| message: false
+#construct appropriate table for visualization
+service_type <- c("bus", "streetcar", "subway")
+num_delay <- c(nrow(bus_delay), nrow(streetcar_delay), nrow(subway_delay))
 
-combined_data <- read_csv(here::here("outputs/data/combined_data.csv"),
-                          show_col_types = FALSE)
+delay_count <- data.frame(service_type, num_delay)
 
-
-combined_data|> ggplot(mapping = aes(x = Month, y = Death_Count)) + 
-  geom_point() + geom_smooth() + 
-  geom_line(aes(x = Month, y = Calls_Coded_month/1000), color = "red") +
-  labs(
-    title = "Calls Coded & Homeless Death Count",
-    x = "Time (in Month)",
-    y = "Count"
-  )
-#still need to add a legend or label, but I haven't yep figured out how
+# Generate the bar plot
+ggplot(delay_count, aes(x = service_type, y = num_delay, fill = service_type)) +
+  geom_bar(stat = "identity") + 
+  labs(title = "Number of Delays by Service Type", x = "Service Type", y = "Number of Delays", fill = "Service Type") +  # Label the axes
+  theme_minimal()  # Apply a minimal theme
 ```
 
 ## Most Delayed during Weekday
 Define Rush Hours
 
 Present Results During Rush Hours & at Off-Peak Hours
+
 ```{r}
-#| label: fig-referred
-#| fig-cap: Visualization to show correlation between number of callers referred to shelter (represented by the purple line) and Homeless Death Counts (represented by the blue line)
 #| echo: false
 #| message: false
 
-combined_data <- read_csv(here::here("outputs/data/combined_data.csv"),
-                          show_col_types = FALSE)
+#filter out delays that occurred on weekdays
+weekday_bus_delay <- bus_delay |>
+  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
+weekday_streetcar_delay <- streetcar_delay |>
+  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
+weekday_subway_delay <- subway_delay |>
+  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
 
-
-combined_data|> ggplot(mapping = aes(x = Month, y = Death_Count)) + 
-  geom_point() + geom_smooth() + 
-  geom_line(aes(x = Month, y = Referral_to_Shelter_month/100), color = "purple") +
-  labs(
-    title = "Callers Referred to Shelter & Homeless Death",
-    x = "Time (in Month)",
-    y = "Count"
-  )
-#still need to add a legend or label, but I haven't yep figured out how
+#filter out delays that occurred on weekends
+weekend_bus_delay <- bus_delay |>
+  filter(day %in% c("Saturday", "Sunday"))
+weekend_streetcar_delay <- streetcar_delay |>
+  filter(day %in% c("Saturday", "Sunday"))
+weekend_subway_delay <- subway_delay |>
+  filter(day %in% c("Saturday", "Sunday"))
 ```
 
 
+```{r}
+#| label: fig-weekday
+#| fig-cap: Visualization to show the most delayed services on weekdays rush hours and off-peak hours
+#| echo: false
+#| message: false
+
+
+```
+
+
+```{r}
+#| label: fig-weekend
+#| fig-cap: Visualization to show the most delayed services on weekdays rush hours
+#| echo: false
+#| message: false
+
+
+```
 
 ## Most Delayed during Weekends
 
@@ -168,27 +182,17 @@ combined_data|> ggplot(mapping = aes(x = Month, y = Death_Count)) +
 #| echo: false
 #| message: false
 
-combined_data <- read_csv(here::here("outputs/data/combined_data.csv"),
-                          show_col_types = FALSE)
 
 
-combined_data|> ggplot(mapping = aes(x = Month, y = Death_Count)) + 
-  geom_point() + geom_smooth() + 
-  geom_line(aes(x = Month, y = Information_Homelessness_and_Prevention_month/100), color = "darkgreen") +
-  labs(
-    title = "Callers given Info on Homeless Prevention vs Homeless Death",
-    x = "Time (in Month)",
-    y = "Count"
-  )
-#still need to add a legend or label, but I haven't yep figured out how
 ```
 
 ## Most Popular Delay Reasons
 - 1 table for all three services
+- separate into rush & off-peak hours
 
 ## Most Popular Delayed Vehicles
 - 1 table for all three services
-
+- separate into rush & off-peak hours
 
 
 # Discussion {#sec-discussion}
