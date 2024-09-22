@@ -24,10 +24,11 @@ library(lubridate)
 library(zoo)
 library(knitr)
 library(ggplot2)
+library(hms)
 
-bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus_delay.csv"))
-streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar_delay.csv"))
-subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway_delay.csv"))
+bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay.csv"))
+streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay.csv"))
+subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway/subway_delay.csv"))
 subway_delay_code <- read.csv(here::here("inputs/data/cleaned_data/subway_delay_code.csv"))
 
 ```
@@ -124,61 +125,57 @@ delay_count <- data.frame(service_type, num_delay)
 # Generate the bar plot
 ggplot(delay_count, aes(x = service_type, y = num_delay, fill = service_type)) +
   geom_bar(stat = "identity") + 
+  geom_text(aes(label = paste0(num_delay, " delayed")), 
+          vjust = 1, color = "white", size = 3.5, position = position_stack(vjust = 0.55)) +
   labs(title = "Number of Delays by Service Type", x = "Service Type", y = "Number of Delays", fill = "Service Type") +  # Label the axes
   theme_minimal()  # Apply a minimal theme
 ```
 
 ## Most Delayed during Weekday
-Define Rush Hours
+Define Rush Hours:
+  Rush Hours: 
+  •	Morning Rush-Hour: Approximately 7:00 AM to 9:00 AM
+	•	Evening Rush-Hour: Approximately 4:00 PM to 7:00 PM
 
 Present Results During Rush Hours & at Off-Peak Hours
 
 ```{r}
 #| echo: false
 #| message: false
-
-#filter out delays that occurred on weekdays
-weekday_bus_delay <- bus_delay |>
-  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
-weekday_streetcar_delay <- streetcar_delay |>
-  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
-weekday_subway_delay <- subway_delay |>
-  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
-
-#filter out delays that occurred on weekends
-weekend_bus_delay <- bus_delay |>
-  filter(day %in% c("Saturday", "Sunday"))
-weekend_streetcar_delay <- streetcar_delay |>
-  filter(day %in% c("Saturday", "Sunday"))
-weekend_subway_delay <- subway_delay |>
-  filter(day %in% c("Saturday", "Sunday"))
+weekday_bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay.csv"))
+weekday_streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay.csv"))
+weekday_subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway/subway_delay.csv"))
 ```
 
 
 ```{r}
 #| label: fig-weekday
-#| fig-cap: Visualization to show the most delayed services on weekdays rush hours and off-peak hours
+#| fig-cap: Visualization to show the total delayed time during weekdays in 2023
 #| echo: false
 #| message: false
 
+service_type <- c("bus", "streetcar", "subway")
+sum_delay_time <- c(sum(weekday_bus_delay$min_delay), sum(weekday_streetcar_delay$min_delay), sum(weekday_subway_delay$min_delay))
+
+total_delay_time <- data.frame(service_type, as.numeric(sum_delay_time))
+
+# Generate the bar plot
+ggplot(total_delay_time, aes(x = service_type, y = sum_delay_time, fill = service_type)) +
+  geom_bar(stat = "identity") + 
+  # Add labels for total hours
+  geom_text(aes(label = paste0(round(sum_delay_time / 60, 2), " hours")), 
+            vjust = 1, color = "white", size = 3.5, position = position_stack(vjust = 0.55)) +  
+  labs(title = "Total Minutes Delayed in 2023 during Weekdays", 
+       x = "Service Type", y = "Total Delayed (min)", fill = "Service Type") +  # Label the axes
+  theme_minimal()
 
 ```
 
+## Most Delayed during Rush-Hours & Off-Peak Hours
 
 ```{r}
-#| label: fig-weekend
-#| fig-cap: Visualization to show the most delayed services on weekdays rush hours
-#| echo: false
-#| message: false
-
-
-```
-
-## Most Delayed during Weekends
-
-```{r}
-#| label: fig-informed
-#| fig-cap: Visualization to show correlation between number of callers given information on homelessness prevention (represented by the dark green line) and Homeless Death Counts (represented by the blue line)
+#| label: fig-rush-off
+#| fig-cap: Horizontal Barplot used to visualize the longest average delay time for different TTC services during Rush-Hours and Off-Peak Hours
 #| echo: false
 #| message: false
 

@@ -10,6 +10,7 @@
 #### Workspace setup ####
 library(tidyverse)
 library(janitor)
+library(dplyr)
 library(readxl)
 library(readr)
 
@@ -60,12 +61,93 @@ subway_delay_code <- subway_delay_code |>
 #rbind the two datasets
 subway_delay_code <- rbind(subway_delay_code, temp_data)
 
+
+### Build Filterized Dataset Based on Mastercopy Delay Datasets ###
+
+## Weekday Delay
+#filter out delays that occurred on weekdays
+weekday_bus_delay <- bus_delay |>
+  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
+weekday_streetcar_delay <- streetcar_delay |>
+  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
+weekday_subway_delay <- subway_delay |>
+  filter(day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
+
+# Weekend Delay
+weekend_bus_delay <- bus_delay |>
+  filter(day %in% c("Saturday", "Sunday"))
+weekend_streetcar_delay <- streetcar_delay |>
+  filter(day %in% c("Saturday", "Sunday"))
+weekend_subway_delay <- subway_delay |>
+  filter(day %in% c("Saturday", "Sunday"))
+
+## Rush-Hour Delay
+# Bus
+bus_delay_time <- bus_delay |>
+  mutate(time = as_hms(paste0(time, ":00"))) |>  # Convert 'time' to HH:MM:SS format
+  arrange(time)  # Sort 'time' column in ascending order
+
+bus_delay_rush <- bus_delay_time |>
+  filter(time >= as_hms("07:00:00") & time <= as_hms("19:00:00")) |>
+  filter(time < as_hms("09:00:00") | time > as_hms("16:00:00")) |>
+  mutate(rush_type = ifelse(time <= as_hms("09:00:00"), "morning", "evening"))
+
+bus_delay_off_peak <- bus_delay_time %>%
+  filter((time < as_hms("07:00:00")) | 
+           (time > as_hms("09:00:00") & time < as_hms("16:00:00")) | 
+           (time > as_hms("19:00:00")))
+# Streetcar
+streetcar_delay_time <- streetcar_delay |>
+  mutate(time = as_hms(paste0(time, ":00"))) |>  # Convert 'time' to HH:MM:SS format
+  arrange(time)  # Sort 'time' column in ascending order
+
+streetcar_delay_rush <- streetcar_delay_time |>
+  filter(time >= as_hms("07:00:00") & time <= as_hms("19:00:00")) |>
+  filter(time < as_hms("09:00:00") | time > as_hms("16:00:00")) |>
+  mutate(rush_type = ifelse(time <= as_hms("09:00:00"), "morning", "evening"))
+
+streetcar_delay_off_peak <- streetcar_delay_time %>%
+  filter((time < as_hms("07:00:00")) | 
+           (time > as_hms("09:00:00") & time < as_hms("16:00:00")) | 
+           (time > as_hms("19:00:00")))
+
+# Subway
+subway_delay_time <- subway_delay |>
+  mutate(time = as_hms(paste0(time, ":00"))) |>  # Convert 'time' to HH:MM:SS format
+  arrange(time)  # Sort 'time' column in ascending order
+
+subway_delay_rush <- subway_delay_time |>
+  filter(time >= as_hms("07:00:00") & time <= as_hms("19:00:00")) |>
+  filter(time < as_hms("09:00:00") | time > as_hms("16:00:00")) |>
+  mutate(rush_type = ifelse(time <= as_hms("09:00:00"), "morning", "evening"))
+
+subway_delay_off_peak <- subway_delay_time %>%
+  filter((time < as_hms("07:00:00")) | 
+           (time > as_hms("09:00:00") & time < as_hms("16:00:00")) | 
+           (time > as_hms("19:00:00")))
+
+
 #### Save data ####
-write_csv(bus_delay, "inputs/data/cleaned_data/bus_delay.csv")
+write_csv(bus_delay, "inputs/data/cleaned_data/bus/bus_delay.csv")
+write_csv(weekday_bus_delay, "inputs/data/cleaned_data/bus/weekday_bus_delay.csv")
+write_csv(weekend_bus_delay, "inputs/data/cleaned_data/bus/weekend_bus_delay.csv")
+write_csv(bus_delay_rush, "inputs/data/cleaned_data/bus/bus_delay_rush.csv")
+write_csv(bus_delay_off_peak, "inputs/data/cleaned_data/bus/bus_delay_off_peak.csv")
 
-write_csv(streetcar_delay, "inputs/data/cleaned_data/streetcar_delay.csv")
 
-write_csv(subway_delay, "inputs/data/cleaned_data/subway_delay.csv")
+write_csv(streetcar_delay, "inputs/data/cleaned_data/streetcar/streetcar_delay.csv")
+write_csv(weekday_streetcar_delay, "inputs/data/cleaned_data/streetcar/weekday_streetcar_delay.csv")
+write_csv(weekend_streetcar_delay, "inputs/data/cleaned_data/streetcar/weekend_streetcar_delay.csv")
+write_csv(streetcar_delay_rush, "inputs/data/cleaned_data/streetcar/streetcar_delay_rush.csv")
+write_csv(streetcar_delay_off_peak, "inputs/data/cleaned_data/streetcar/streetcar_delay_off_peak.csv")
+
+
+write_csv(subway_delay, "inputs/data/cleaned_data/subway/subway_delay.csv")
+write_csv(weekday_subway_delay, "inputs/data/cleaned_data/subway/weekday_subway_delay.csv")
+write_csv(weekend_subway_delay, "inputs/data/cleaned_data/subway/weekend_subway_delay.csv")
+write_csv(subway_delay_rush, "inputs/data/cleaned_data/subway/subway_delay_rush.csv")
+write_csv(subway_delay_off_peak, "inputs/data/cleaned_data/subway/subway_delay_off_peak.csv")
+
 
 write_csv(subway_delay_code, "inputs/data/cleaned_data/subway_delay_code.csv")
 
