@@ -1,12 +1,12 @@
 ---
-title: "Choosing TTC x Provides the Most Time Stability during Rush Hours"
+title: "Choosing TTC Subway Service Provides the Most Time Stability during Weekday Rush-Hours"
 subtitle: "Analysis on the Delay Magnitude of different TTC Services"
 author: 
   - Sandy Yu
 thanks: "Code and data are available at: https://github.com/Jingying-yu/ttc_delay.git"
 date: today
 date-format: long
-abstract: ""
+abstract: "This paper analyzes the magnitude of TTC delays in 2023 based on service types. TTC delay data for buses, streetcars, and subways are obtained through Open Data Toronto data portal and data is used to visualize delay magnitude during different days and hours throughout the year. We find that, although TTC streetcars offered the least number of delays in 2023, riding on TTC subways provides the least average time of delay during weekday rush-hour traffic. Our results suggest that, if the time required to arrive at one's office is the same for all TTC service options, choosing subway over other services could provide the most time stability."
 format: pdf
 toc: true
 number-sections: true
@@ -21,10 +21,10 @@ bibliography: references.bib
 library(tidyverse)
 library(dplyr)
 library(lubridate)
-library(zoo)
 library(knitr)
 library(ggplot2)
 library(hms)
+library(patchwork)
 
 bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay.csv"))
 streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay.csv"))
@@ -142,6 +142,7 @@ Present Results During Rush Hours & at Off-Peak Hours
 ```{r}
 #| echo: false
 #| message: false
+# Setup
 weekday_bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay.csv"))
 weekday_streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay.csv"))
 weekday_subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway/subway_delay.csv"))
@@ -156,40 +157,104 @@ weekday_subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway/sub
 
 service_type <- c("bus", "streetcar", "subway")
 sum_delay_time <- c(sum(weekday_bus_delay$min_delay), sum(weekday_streetcar_delay$min_delay), sum(weekday_subway_delay$min_delay))
+mean_delay_time <- c(mean(weekday_bus_delay$min_delay), mean(weekday_streetcar_delay$min_delay), mean(weekday_subway_delay$min_delay))
+
 
 total_delay_time <- data.frame(service_type, as.numeric(sum_delay_time))
+avg_delay_time <- data.frame(service_type, as.numeric(mean_delay_time))
 
 # Generate the bar plot
-ggplot(total_delay_time, aes(x = service_type, y = sum_delay_time, fill = service_type)) +
+sum_graph <- ggplot(total_delay_time, aes(x = service_type, y = sum_delay_time/60, fill = service_type)) +
   geom_bar(stat = "identity") + 
   # Add labels for total hours
-  geom_text(aes(label = paste0(round(sum_delay_time / 60, 2), " hours")), 
-            vjust = 1, color = "white", size = 3.5, position = position_stack(vjust = 0.55)) +  
-  labs(title = "Total Minutes Delayed in 2023 during Weekdays", 
-       x = "Service Type", y = "Total Delayed (min)", fill = "Service Type") +  # Label the axes
-  theme_minimal()
+  geom_text(aes(label = paste0(round(sum_delay_time / 60, 2), "hrs")), 
+            vjust = 1, color = "black", size = 1.5, lineheight = 0.8, position = position_stack(vjust = 0.6)) +  
+  labs(title = "Total Weekday Delay (hrs)", 
+       x = "Service Type", y = "Total Delayed (hrs)", fill = "Service Type") +  # Label the axes
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(size = 8))
 
+avg_graph <- ggplot(avg_delay_time, aes(x = service_type, y = mean_delay_time, fill = service_type)) +
+  geom_bar(stat = "identity") + 
+  # Add labels for total hours
+  geom_text(aes(label = paste0(round(mean_delay_time, 1), " mins")), 
+            vjust = 1, color = "black", size = 2, position = position_stack(vjust = 0.6)) +  
+  labs(title = "Average Weekday Delay (min)", 
+       x = "Service Type", y = "Average Delay Time (min)", fill = "Service Type") +  # Label the axes
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 8))
+
+sum_graph + avg_graph
 ```
 
-## Most Delayed during Rush-Hours & Off-Peak Hours
+## Most Delayed during Rush-Hours
+```{r}
+#| echo: false
+#| message: false
+# Setup
+bus_delay_rush <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay_rush.csv"))
+streetcar_delay_rush <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay_rush.csv"))
+subway_delay_rush <- read.csv(here::here("inputs/data/cleaned_data/subway/subway_delay_rush.csv"))
+```
 
 ```{r}
 #| label: fig-rush-off
-#| fig-cap: Horizontal Barplot used to visualize the longest average delay time for different TTC services during Rush-Hours and Off-Peak Hours
+#| fig-cap: Barplot used to visualize the longest average delay time for different TTC services during Rush-Hours and Off-Peak Hours
 #| echo: false
 #| message: false
 
+service_type <- c("bus", "streetcar", "subway")
 
+morning_bus_rush <- bus_delay_rush |> filter(rush_type == "morning")
+morning_streetcar_rush <- streetcar_delay_rush |> filter(rush_type == "morning")
+morning_subway_rush <- subway_delay_rush |> filter(rush_type == "morning")
+morning_mean_delay_rush <- c(mean(morning_bus_rush$min_delay), mean(morning_streetcar_rush$min_delay), mean(morning_subway_rush$min_delay))
 
+#build morning rush dataset
+morning_avg_delay_rush <- data.frame(service_type, as.numeric(morning_mean_delay_rush))
+
+evening_bus_rush <- bus_delay_rush |> filter(rush_type == "evening")
+evening_streetcar_rush <- streetcar_delay_rush |> filter(rush_type == "evening")
+evening_subway_rush <- subway_delay_rush |> filter(rush_type == "evening")
+evening_mean_delay_rush <- c(mean(evening_bus_rush$min_delay), mean(evening_streetcar_rush$min_delay), mean(evening_subway_rush$min_delay))
+
+#build evening rush dataset
+evening_avg_delay_rush <- data.frame(service_type, as.numeric(evening_mean_delay_rush))
+
+morning_rush <- ggplot(morning_avg_delay_rush, aes(x = service_type, y = morning_mean_delay_rush, fill = service_type)) + geom_bar(stat = "identity") + 
+  # Add labels for total hours
+  geom_text(aes(label = paste0(round(mean_delay_time, 1), " mins")), 
+            vjust = 1, color = "white", size = 2, position = position_stack(vjust = 0.6)) +  
+  labs(title = "Morning Rush Average Delay", 
+       x = "Service Type", y = "Average Delay Time (min)", fill = "Service Type") +  # Label the axes
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(size = 8))
+
+evening_rush <- ggplot(evening_avg_delay_rush, aes(x = service_type, y = evening_mean_delay_rush, fill = service_type)) + geom_bar(stat = "identity") + 
+  # Add labels for total hours
+  geom_text(aes(label = paste0(round(mean_delay_time, 1), " mins")), 
+            vjust = 1, color = "white", size = 2, position = position_stack(vjust = 0.6)) +  
+  labs(title = "Evening Rush Average Weekday Delay", 
+       x = "Service Type", y = "Average Delay Time (min)", fill = "Service Type") +  # Label the axes
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 8))
+
+morning_rush + evening_rush
 ```
 
 ## Most Popular Delay Reasons
 - 1 table for all three services
 - separate into rush & off-peak hours
+```{r}
+
+```
 
 ## Most Popular Delayed Vehicles
 - 1 table for all three services
 - separate into rush & off-peak hours
+```{r}
+
+```
 
 
 # Discussion {#sec-discussion}
