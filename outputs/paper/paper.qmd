@@ -57,7 +57,7 @@ Analyses and findings in this paper are structured into several sections: @sec-d
 
 sample_bus_delay <- head(bus_delay, n = 3)
 
-knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Location", "Cause of Delay", "Min Delayed", "Min Gap", "Direction", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
+knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay", "Min Gap", "Direction", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
 ```
 
 
@@ -71,7 +71,12 @@ knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Loc
 
 sample_streetcar_delay <- head(streetcar_delay, n = 3)
 
-knitr::kable(sample_streetcar_delay, col.names = c("Date", "Line", "Time", "Day", "Location", "Cause of Delay", "Min Delayed", "Min Gap", "Bound", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
+library(knitr)
+library(kableExtra)
+
+# Generate the table with automatic text wrapping for column names
+knitr::kable(sample_streetcar_delay, 
+             col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay", "Min Gap", "Bound", "Vehicle"), align = c("l","c", "c", "c", "c", "c", "c", "c", "c", "c")) 
 ```
 
 
@@ -98,7 +103,7 @@ knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description")
 
 sample_subway_delay <- head(subway_delay, n = 3)
 
-knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Location", "Delay Code", "Min Delayed", "Min Gap", "Bound", "Line", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
+knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Station", "Delay Code", "Min Delayed", "Min Gap", "Bound", "Line", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
 ```
 
 ## TTC Delay Comparision
