@@ -46,7 +46,7 @@ Analyses and findings in this paper are structured into several sections: @sec-d
 
 
 
-## TTC Bus Delay
+## TTC Bus Delay {#sec-data-bus}
 
 
 
@@ -61,7 +61,7 @@ knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Sta
 ```
 
 
-## TTC Streetcar Delay
+## TTC Streetcar Delay {#sec-data-streetcar}
 
 
 ```{r}
@@ -77,9 +77,9 @@ knitr::kable(sample_streetcar_delay,
 ```
 
 
-## TTC Subway Delay
+## TTC Subway Delay {#sec-data-subway}
 
-### Delay Code
+### Delay Code {#sec-data-code}
 ```{r}
 #| label: tbl-subway-code
 #| tbl-cap: Sample of TTC Subway Delay Code
