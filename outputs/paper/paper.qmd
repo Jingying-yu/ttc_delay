@@ -248,14 +248,53 @@ morning_rush + evening_rush
 - 1 table for all three services
 - separate into rush & off-peak hours
 ```{r}
+#| label: tbl-reason
+#| tbl-cap: Top 5 Most Popular Reason for Delay
+#| echo: false
+#| message: false
 
+# Extract the top 5 most frequent 'incident' values for each dataset
+top_bus_incidents <- head(sort(table(bus_delay$incident), decreasing = TRUE), 5)
+top_streetcar_incidents <- head(sort(table(streetcar_delay$incident), decreasing = TRUE), 5)
+top_subway_incidents <- head(sort(table(subway_delay$code), decreasing = TRUE), 5)
+top_subway_codes <- names(top_subway_incidents)
+
+reason_delay <- data.frame(
+  names(top_bus_incidents), names(top_streetcar_incidents), top_subway_codes)
+
+# Create a new dataset 'reason_delay'
+reason_delay$top_subway_codes <- subway_delay_code$code_description[
+  match(reason_delay$top_subway_codes, subway_delay_code$code)
+]
+
+reason_delay <- reason_delay |> rename(bus = names.top_bus_incidents., streetcar = names.top_streetcar_incidents., subway = top_subway_codes)
+
+knitr::kable(reason_delay, col.names = c("Bus", "Streetcar", "Subway"), align = c("c", "c","c"))
 ```
 
-## Most Popular Delayed Vehicles
+## Most Popular Delayed Lines
 - 1 table for all three services
 - separate into rush & off-peak hours
 ```{r}
+#| label: tbl-lines
+#| tbl-cap: Most delayed Lines for each TTC Service
+#| echo: false
+#| message: false
 
+service_type <- c("bus", "streetcar", "subway")
+most_delay_line <- c(bus_delay$route[which.max(bus_delay$min_delay)], streetcar_delay$line[which.max(streetcar_delay$min_delay)], subway_delay$line[which.max(subway_delay$min_delay)])
+
+# create dataframe
+most_delay_data <- data.frame(service_type, most_delay_line)
+# rename SRT to proper TTC Line name
+most_delay_data$most_delay_line[most_delay_data$most_delay_line == "SRT"] <- "Line 3"
+
+#modify table aesthetics
+most_delay_transposed <- t(most_delay_data$most_delay_line)
+colnames(most_delay_transposed) <- most_delay_data$service_type
+
+# Display the transposed data using knitr::kable()
+knitr::kable(most_delay_transposed, col.names = colnames(most_delay_transposed), align = "c")
 ```
 
 
