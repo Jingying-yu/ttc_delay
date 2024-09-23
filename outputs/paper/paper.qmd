@@ -71,9 +71,6 @@ knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Sta
 
 sample_streetcar_delay <- head(streetcar_delay, n = 3)
 
-library(knitr)
-library(kableExtra)
-
 # Generate the table with automatic text wrapping for column names
 knitr::kable(sample_streetcar_delay, 
              col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay", "Min Gap", "Bound", "Vehicle"), align = c("l","c", "c", "c", "c", "c", "c", "c", "c", "c")) 
