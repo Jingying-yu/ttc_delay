@@ -20,7 +20,7 @@ The repo is structured as:
 -   `inputs/data/cleaned_data` contains the cleaned dataset that constructed for final analysis in the paper content.
 -   `inputs/llms` contains chat history with Large Language Model ChatGPT 4o, which was used to assist the code construct througout the paper
 -   `other` contains relevant literature, details about LLM chat interactions, and sketches.
--   `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
+-   `outputs` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
 -   `scripts` contains the R scripts used to simulate, download and clean data.
 
 ## Statement on LLM usage
