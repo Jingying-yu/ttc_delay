@@ -2,7 +2,7 @@
 
 ## Overview
 
-TTC Service is one of the most popular way to travel around downtown Toronto, but varying levels of delay occurs with different types of TTC service. This paper will focus on analyzing 2023's TTC service delay magnitude and advise the reader on which TTC service to ride on at different days of the week, and different hours of the day using concrete quantitative analysis.
+TTC Service is one of the most popular way to travel around downtown Toronto, but varying levels of delay occurs with different types of TTC service. This [paper](https://github.com/Jingying-yu/ttc_delay/blob/main/outputs/paper/paper.pdf) will focus on analyzing 2023's TTC service delay magnitude and advise the reader on which TTC service to ride on at different days of the week, and different hours of the day using concrete quantitative analysis.
 
 TTC Bus Delay data can be accessed [here](https://open.toronto.ca/dataset/ttc-bus-delay-data/)
 
