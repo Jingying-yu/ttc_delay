@@ -13,13 +13,14 @@ library(janitor)
 library(dplyr)
 library(readxl)
 library(readr)
+library(hms)
 
 
 #### Read data ####
-bus_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2023.xlsx")
-streetcar_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/streetcar_delay_2023.xlsx")
-subway_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_2023.xlsx")
-subway_delay_code <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_code.xlsx")
+bus_delay_2023 <- read_excel("inputs/raw_data/bus_delay_2023.xlsx")
+streetcar_delay_2023 <- read_excel("inputs/raw_data/streetcar_delay_2023.xlsx")
+subway_delay_2023 <- read_excel("inputs/raw_data/subway_delay_2023.xlsx")
+subway_delay_code <- read_excel("inputs/raw_data/subway_delay_code.xlsx")
 
 #### Clean data ####
 
@@ -27,18 +28,21 @@ subway_delay_code <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay
 bus_delay <-
   bus_delay_2023 |>
   janitor::clean_names() |>
-  mutate(date = as.Date(date, format = "%Y-%m-%d"))
+  mutate(date = as.Date(date, format = "%Y-%m-%d")) |>
+  select(date, route, time, day, location, incident, min_delay)
 
 streetcar_delay <-
   streetcar_delay_2023 |>
   janitor::clean_names() |>
-  mutate(date = as.Date(date, format = "%Y-%m-%d"))
+  mutate(date = as.Date(date, format = "%Y-%m-%d")) |>
+  select(date, line, time, day, location, incident, min_delay)
 
 subway_delay <-
   subway_delay_2023 |>
   janitor::clean_names() |>
   mutate(date = as.Date(date, format = "%Y-%m-%d")) |>
-  rename(location = station)
+  rename(location = station) |>
+  select(date, time, day, location, code, min_delay, line)
 
 
 ### Subway Delay Code ###
@@ -109,20 +113,20 @@ subway_delay_rush <- subway_delay_time |>
 
 
 #### Save data ####
-write_csv(bus_delay, "inputs/data/cleaned_data/bus/bus_delay.csv")
-write_csv(weekday_bus_delay, "inputs/data/cleaned_data/bus/weekday_bus_delay.csv")
-write_csv(bus_delay_rush, "inputs/data/cleaned_data/bus/bus_delay_rush.csv")
+write_csv(bus_delay, "outputs/cleaned_data/bus/bus_delay.csv")
+write_csv(weekday_bus_delay, "outputs/cleaned_data/bus/weekday_bus_delay.csv")
+write_csv(bus_delay_rush, "outputs/cleaned_data/bus/bus_delay_rush.csv")
 
 
-write_csv(streetcar_delay, "inputs/data/cleaned_data/streetcar/streetcar_delay.csv")
-write_csv(weekday_streetcar_delay, "inputs/data/cleaned_data/streetcar/weekday_streetcar_delay.csv")
-write_csv(streetcar_delay_rush, "inputs/data/cleaned_data/streetcar/streetcar_delay_rush.csv")
+write_csv(streetcar_delay, "outputs/cleaned_data/streetcar/streetcar_delay.csv")
+write_csv(weekday_streetcar_delay, "outputs/cleaned_data/streetcar/weekday_streetcar_delay.csv")
+write_csv(streetcar_delay_rush, "outputs/cleaned_data/streetcar/streetcar_delay_rush.csv")
 
 
-write_csv(subway_delay, "inputs/data/cleaned_data/subway/subway_delay.csv")
-write_csv(weekday_subway_delay, "inputs/data/cleaned_data/subway/weekday_subway_delay.csv")
-write_csv(subway_delay_rush, "inputs/data/cleaned_data/subway/subway_delay_rush.csv")
+write_csv(subway_delay, "outputs/cleaned_data/subway/subway_delay.csv")
+write_csv(weekday_subway_delay, "outputs/cleaned_data/subway/weekday_subway_delay.csv")
+write_csv(subway_delay_rush, "outputs/cleaned_data/subway/subway_delay_rush.csv")
 
 
-write_csv(subway_delay_code, "inputs/data/cleaned_data/subway_delay_code.csv")
+write_csv(subway_delay_code, "outputs/cleaned_data/subway_delay_code.csv")
 
