@@ -19,8 +19,8 @@ library(readr)
 ### Bus Data ###
 
 download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/e271cdae-8788-4980-96ce-6a5c95bc6618/resource/10802a64-9ac0-4f2e-9538-04800a399d1e/download/ttc-bus-delay-data-2023.xlsx",
-              "inputs/data/downloaded_xlsx_format/bus_delay_2023.xlsx", mode = "wb")
-bus_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2023.xlsx")
+              "inputs/raw_data/bus_delay_2023.xlsx", mode = "wb")
+bus_delay_2023 <- read_excel("inputs/raw_data/bus_delay_2023.xlsx")
 
 
 
