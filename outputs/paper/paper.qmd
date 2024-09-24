@@ -47,7 +47,7 @@ of the datasets and examines all datasets and variables kept for analysis. The R
 
 # Data {#sec-data}
 
-Where the data comes from - All data used for and throughout the paper are extracted from Open Data Toronto Portal [@OpenDataToronto]. TTC Bus Delay data [@Bus], TTC Streetcar Delay [@Streetcar], TTC Subway Delay [@Subway] and TTC Subway Delay Codes [@Subway] are retrieved to compare the delay magnitudes of different services. Data is cleaned and analyzed using the open source statistical programming language R [@citeR] and supporting packages tidyverse [@tidyverse], janitor [@janitor], dplyr [@dplyr], hms [@hms], ggplot2 [@ggplot2], patchwork [@patchwork], and knitr [@knitr].
+Where the data comes from - All data used for and throughout the paper are extracted from Open Data Toronto Portal [@OpenDataToronto]. TTC Bus Delay data [@Bus], TTC Streetcar Delay [@Streetcar], TTC Subway Delay [@Subway] and TTC Subway Delay Codes [@Subway] are retrieved to compare the delay magnitudes of different services. Data is cleaned and analyzed using the open source statistical programming language R [@citeR] and supporting packages tidyverse [@tidyverse], janitor [@janitor], dplyr [@dplyr], hms [@hms], ggplot2 [@ggplot2], patchwork [@patchwork], kableExtra [@kableExtra], and knitr [@knitr].
 \
 \
 For all delay dataset, only data in 2023 were chosen. There are three
@@ -222,8 +222,9 @@ subway_delay_rush <- read.csv(here::here("inputs/data/cleaned_data/subway/subway
 ```
 
 ```{r}
-#| label: fig-rush-off
+#| label: fig-rush
 #| fig-cap: Barplot used to visualize the longest average delay time for different TTC services during Rush-Hours and Off-Peak Hours
+#| fig-pos: "H"
 #| echo: false
 #| message: false
 
@@ -249,7 +250,7 @@ morning_rush <- ggplot(morning_avg_delay_rush, aes(x = service_type, y = morning
   # Add labels for total hours
   geom_text(aes(label = paste0(round(mean_delay_time, 1), " mins")), 
             vjust = 1, color = "white", size = 2, position = position_stack(vjust = 0.6)) +  
-  labs(title = "Morning Rush Average Delay", 
+  labs(title = "AM-Rush Average Delay", 
        x = "Service Type", y = "Average Delay Time (min)", fill = "Service Type") +  # Label the axes
   theme_minimal() +
   theme(legend.position = "none", axis.text.x = element_text(size = 8))
@@ -258,7 +259,7 @@ evening_rush <- ggplot(evening_avg_delay_rush, aes(x = service_type, y = evening
   # Add labels for total hours
   geom_text(aes(label = paste0(round(mean_delay_time, 1), " mins")), 
             vjust = 1, color = "white", size = 2, position = position_stack(vjust = 0.6)) +  
-  labs(title = "Evening Rush Average Weekday Delay", 
+  labs(title = "PM-Rush Average Delay", 
        x = "Service Type", y = "Average Delay Time (min)", fill = "Service Type") +  # Label the axes
   theme_minimal() +
   theme(axis.text.x = element_text(size = 8))
@@ -293,7 +294,8 @@ reason_delay$top_subway_codes <- subway_delay_code$code_description[
 
 reason_delay <- reason_delay |> rename(bus = names.top_bus_incidents., streetcar = names.top_streetcar_incidents., subway = top_subway_codes)
 
-knitr::kable(reason_delay, col.names = c("Bus", "Streetcar", "Subway"), align = c("c", "c","c"))
+knitr::kable(reason_delay, col.names = c("Bus", "Streetcar", "Subway"), align = c("c", "c", "c")) |>
+  kableExtra::kable_styling(position = "center")
 ```
 
 ## Most Popular Delayed Lines
