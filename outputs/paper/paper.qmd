@@ -48,16 +48,16 @@ of the datasets and examines all datasets and variables kept for analysis. The R
 # Data {#sec-data}
 
 Where the data comes from - All data used for and throughout the paper are extracted from Open Data Toronto Portal [@OpenDataToronto]. TTC Bus Delay data [@Bus], TTC Streetcar Delay [@Streetcar], TTC Subway Delay [@Subway] and TTC Subway Delay Codes [@Subway] are retrieved to compare the delay magnitudes of different services. Data is cleaned and analyzed using the open source statistical programming language R [@citeR] and supporting packages tidyverse [@tidyverse], janitor [@janitor], dplyr [@dplyr], hms [@hms], ggplot2 [@ggplot2], patchwork [@patchwork], kableExtra [@kableExtra], and knitr [@knitr].
-\
-\
+
+
 For all delay dataset, only data in 2023 were chosen. There are three
 main reasons for this choice:
 
-**1.** 2023 data is the most recent full-year data and offers the best reference for current (2024) delay patterns.
+>**1.** 2023 data is the most recent full-year data and offers the best reference for current (2024) delay patterns.
 
-**2.** COVID-19 impacted TTC operating capacity and styles in other years close to 2024.
+>**2.** COVID-19 impacted TTC operating capacity and styles in other years close to 2024.
 
-**3.** data from earlier years (before 2020) were structured very differently.
+>**3.** data from earlier years (before 2020) were structured very differently.
 
 Therefore only 2023 delay data were chosen in this paper.
 
@@ -286,7 +286,7 @@ morning_rush + evening_rush
 ```{r}
 #| label: tbl-reason
 #| tbl-cap: Top 5 Most Popular Reason for Delay
-#| fig-pos: "H"
+#| table.position: "H"
 #| echo: false
 #| message: false
 
@@ -307,7 +307,7 @@ reason_delay$top_subway_codes <- subway_delay_code$code_description[
 reason_delay <- reason_delay |> rename(bus = names.top_bus_incidents., streetcar = names.top_streetcar_incidents., subway = top_subway_codes)
 
 knitr::kable(reason_delay, col.names = c("Bus", "Streetcar", "Subway"), align = c("c", "c", "c")) |>
-  kableExtra::kable_styling(position = "center")
+  kableExtra::kable_styling(position = "center", font_size = 10)
 ```
 
 ## Most Popular Delayed Lines
@@ -318,7 +318,7 @@ knitr::kable(reason_delay, col.names = c("Bus", "Streetcar", "Subway"), align = 
 ```{r}
 #| label: tbl-lines
 #| tbl-cap: Most delayed Lines for each TTC Service
-#| fig-pos: "H"
+#| table.position: "H"
 #| echo: false
 #| message: false
 
