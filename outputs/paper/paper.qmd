@@ -139,8 +139,11 @@ knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description")
 
 
 # Results {#sec-results}
+The results section provides a comprehensive analysis of TTC service delays in 2023, with a focus on identifying patterns and factors contributing to these delays across bus, streetcar, and subway services. We begin by examining which service experienced the highest total number of delays, followed by an evaluation of delays specifically occurring on weekdays. Subsequently, we delve into delay patterns during rush hours to understand how peak travel times affect each service type. The section also explores the most common reasons for delays, highlighting issues unique to each service. Finally, we identify the routes most frequently affected by delays, offering insights into potential areas for targeted improvements. This multi-faceted analysis aims to provide a clearer picture of how delays impact TTC services and which areas may require attention for enhancing service reliability.
 
 ## Highest Number of Total Delayed
+
+@fig-total-delay shows that the TTC bus service experienced the highest number of total delays in 2023, with 56,207 delays recorded, followed by the subway service with 22,949 delays, and the streetcar service with 14,413 delays. However, it is important to note that while buses are the most frequently delayed service, the number of delays doesn’t necessarily reflect the overall magnitude of delay experienced by passengers. The next section -- @sec-weekday -- will dive deeper into the average delay time experienced by passengers, specifically during rush-hours on weekdays.
 
 ```{r}
 #| label: fig-total-delay
@@ -163,13 +166,9 @@ ggplot(delay_count, aes(x = service_type, y = num_delay, fill = service_type)) +
   theme_minimal()  # Apply a minimal theme
 ```
 
-## Most Delayed during Weekday
+## Most Delayed during Weekday {#sec-weekday}
 
-Define Rush Hours: Rush Hours: 
-• Morning Rush-Hour: Approximately 7:00 AM to 9:00 AM 
-• Evening Rush-Hour: Approximately 4:00 PM to 7:00 PM
-
-Present Results During Rush Hours & at Off-Peak Hours
+The figure below, @fig-weekday, reveals that the total weekday delay in hours was highest for buses, reaching approximately 18971.37 hours, followed by streetcars with 3736.2 hours, and finally, subways with 1136.32 hours. When examining the average delay per incident, buses experienced the longest average delay time at 20.3 minutes, streetcars averaged 15.6 minutes, and subways had the shortest average delay of just 3 minutes per incident. These two visualizations complement each other to indicate that TTC subway consistently exhibited the least delay on weekdays, making it the most reliable option for weekday travel.
 
 ```{r}
 #| echo: false
@@ -221,7 +220,7 @@ avg_graph <- ggplot(avg_delay_time, aes(x = service_type, y = mean_delay_time, f
 sum_graph + avg_graph
 ```
 
-## Most Delayed during Rush-Hours
+### Most Delayed during Rush-Hours
 
 ```{r}
 #| echo: false
