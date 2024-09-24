@@ -38,7 +38,7 @@ Public transportation serves as the transportation backbone for city  residents,
 
 Publicly accessible TTC delay data can be tracked back to 2014 on the @OpenDataToronto portal, yet a comprehensive visualization of how each type of service -- bus, streetcar, and subway -— performs in terms of delay time remains narrowly explored. This paper addresses this gap by using data from the TTC delay data to analyze and visualize delay patterns across different services.
 
-This paper specifically focuses on TTC bus, streetcar, and subway delay data from 2023, extracting and comparing them to identify which service type experienced the least amount of delay during weekday rush hours. Our findings indicate that, in 2023, the TTC subway system consistently demonstrated the shortest average delays.
+This paper specifically focuses on TTC bus, streetcar, and subway delay data from 2023, extracting and comparing them to identify which service type experienced the least amount of delay during weekday rush hours. Throughout the paper, *rush-hour* will refers to the periods from 7:00 AM to 9:00 AM (morning rush) and 4:00 PM to 7:00 PM (evening rush). Our findings indicate that, in 2023, the TTC subway system consistently demonstrated the shortest average delays.
 
 Understanding these patterns is crucial for helping commuters make informed choices about which TTC service to use, especially when they have equal access to different types of stations. By providing this analysis, the paper aim to assist readers in optimizing their travel choices and enhancing their overall commuting experience.
 
@@ -64,7 +64,7 @@ Therefore only 2023 delay data were chosen in this paper.
 
 ## TTC Bus Delay {#sec-data-bus}
 
-TTC bus delay data are collected and published by the Toronto Transit Commission [@Bus], with latest update in September of 2024. A total of 7 attributes of the data are kept for further evaluation: *date of recorded delay, bus route, scheduled time of arrival, scheduled day of the week (ex. Sunday, Monday, etc.), station, cause of delay,* and *total minutes delayed*. Additional data attributes, such as *vehicle number*, were excluded from the final dataset as they are less relevant to the focus of our analysis—weekday rush-hour delay patterns.
+TTC bus delay data are collected and published by the Toronto Transit Commission [@Bus], with latest update in September of 2024. A total of 7 attributes of the data are kept for further evaluation: *date of recorded delay, bus route, scheduled time of arrival, scheduled day of the week* (ex. Sunday, Monday, etc.)*, station, cause of delay,* and *total minutes delayed*. Additional data attributes, such as *vehicle number*, were excluded from the final dataset as they are less relevant to the focus of our analysis—weekday rush-hour delay patterns.
 
 Please see @tbl-bus for an overview of the data.
 
@@ -222,6 +222,8 @@ sum_graph + avg_graph
 
 ### Most Delayed during Rush-Hours
 
+Rush hour, as defined in this paper, refers to the periods from 7:00 AM to 9:00 AM in the morning and 4:00 PM to 7:00 PM in the evening. @fig-rush illustrates that during these periods, buses experienced the longest average delay times, with both the morning and evening rush periods showing an average delay of approximately 20.3 minutes. Streetcars followed, with an average delay of 15.6 minutes for both morning and evening rush hours, while subways had the shortest average delays, recording just 3 minutes in both periods. These results highlight that the subway consistently offers the most reliable service during rush-hour traffic compared to buses and streetcars.
+
 ```{r}
 #| echo: false
 #| message: false
@@ -279,8 +281,7 @@ morning_rush + evening_rush
 
 ## Most Popular Delay Reasons
 
--   1 table for all three services
--   separate into rush & off-peak hours
+@tbl-reason presents the top 5 most frequent reasons for delays across the three TTC services. For buses, the most common causes included mechanical issues and security, while streetcars experienced delays primarily due to operations and mechanical problems. For subways, disorderly patrons and passenger assistance alarms were among the top delay causes. Understanding these reasons is essential for addressing service inefficiencies.
 
 ```{r}
 #| label: tbl-reason
@@ -311,8 +312,7 @@ knitr::kable(reason_delay, col.names = c("Bus", "Streetcar", "Subway"), align = 
 
 ## Most Popular Delayed Lines
 
--   1 table for all three services
--   separate into rush & off-peak hours
+@tbl-lines highlights the lines most prone to delays for each TTC service. The bus route 121, the streetcar line 506, and subway Line 3 (SRT line) were identified as the most frequently delayed routes. These insights indicate potential areas for service improvement, especially during peak travel times.
 
 ```{r}
 #| label: tbl-lines
