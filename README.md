@@ -15,10 +15,9 @@ TTC Subway Delay data can be accessed [here](https://open.toronto.ca/dataset/ttc
 
 The repo is structured as:
 
--   `inputs/sketch` contains the author's visualized thought of how to proceed with the acquired data, in hand-drawn format
--   `inputs/data/raw_data` contains the raw data as obtained from OpenDataToronto
+-   `inputs/sketches` contains the author's visualized thought of how to proceed with the acquired data, in hand-drawn format
+-   `inputs/raw_data` contains the raw data as obtained from OpenDataToronto
 -   `inputs/llms` contains chat history with Large Language Model ChatGPT 4o, which was used to assist the code construct througout the paper
--   `inputs/sketches` contains relevant sketches that helps construct the backbone of the paper.
 -   `outputs/cleaned_data` contains the cleaned dataset that constructed for final analysis in the paper content.
 -   `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
 -   `scripts` contains the R scripts used to simulate, download and clean data.
