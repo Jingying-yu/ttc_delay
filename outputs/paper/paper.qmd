@@ -200,21 +200,23 @@ sum_graph <- ggplot(total_delay_time, aes(x = service_type, y = sum_delay_time/6
   geom_bar(stat = "identity") + 
   # Add labels for total hours
   geom_text(aes(label = paste0(round(sum_delay_time / 60, 2), "hrs")), 
-            vjust = 1, color = "black", size = 1.5, lineheight = 0.8, position = position_stack(vjust = 0.6)) +  
+            vjust = 1, color = "black", size = 1.6, lineheight = 0.8, position = position_stack(vjust = 0.6)) +  
   labs(title = "Total Weekday Delay (hrs)", 
        x = "Service Type", y = "Total Delayed (hrs)", fill = "Service Type") +  # Label the axes
   theme_minimal() +
-  theme(legend.position = "none", axis.text.x = element_text(size = 8))
+  theme(legend.position = "none", axis.text.x = element_text(size = 8), 
+        plot.title = element_text(size = 11))
 
 avg_graph <- ggplot(avg_delay_time, aes(x = service_type, y = mean_delay_time, fill = service_type)) +
   geom_bar(stat = "identity") + 
   # Add labels for total hours
-  geom_text(aes(label = paste0(round(mean_delay_time, 1), " mins")), 
+  geom_text(aes(label = paste0(round(mean_delay_time, 1), "mins")), 
             vjust = 1, color = "black", size = 2, position = position_stack(vjust = 0.6)) +  
   labs(title = "Average Weekday Delay (min)", 
        x = "Service Type", y = "Average Delay Time (min)", fill = "Service Type") +  # Label the axes
   theme_minimal() +
-  theme(axis.text.x = element_text(size = 8))
+  theme(axis.text.x = element_text(size = 8), 
+        plot.title = element_text(size = 11))
 
 sum_graph + avg_graph
 ```
