@@ -35,21 +35,13 @@ subway_delay_code <- read.csv(here::here("inputs/data/cleaned_data/subway_delay_
 
 
 # Introduction
-1) broader context to motivate
-- Public transportation is an important part of urban life, it is responsible for transporting millions of people around the city everyday. Choosing the correct TTC service offers a more stable timetable for office workers, student, and the elderly alike.
+Public transportation serves as the transportation backbone for city residents, facilitating the daily commute of millions of people. For office workers, students, and the elderly, selecting the appropriate TTC service is crucial in maintaining a reliable and efficient schedule. Despite the importance of this choice, there has been limited effort to evaluate the reliability of different TTC services to guide commuters’ choices.
 
-2) some detail about what the paper is about; a clear gap that needs to be filled
-- TTC data has been publicly available since 2014, this paper seeks to use these open-sourced data to visualize how each type of TTC service performs through their delay time. 
-- TTC bus, streetcar, and subway delay data are all collected through @OpenDataToronto data portal.
+Publicly accessible TTC delay data can be tracked back to 2014 on the @OpenDataToronto portal, yet a comprehensive visualization of how each type of service -- bus, streetcar, and subway -— performs in terms of delay time remains narrowly explored. This paper addresses this gap by using data from the TTC delay data to analyze and visualize delay patterns across different services.
 
-3) what was done
-- TTC bus, streetcar, and subway delay data in 2023 were extracted and compared to determine the TTC service type that offers the least amount of delay during weekday rush-hours.
+This paper specifically focuses on TTC bus, streetcar, and subway delay data from 2023, extracting and comparing them to identify which service type experienced the least amount of delay during weekday rush hours. Our findings indicate that, in 2023, the TTC subway system consistently demonstrated the shortest average delays.
 
-4) what was found
-- TTC subways has a history of offering the least average delay in 2023.
-
-5) why it is important
-- assist readers in choosing between different TTC services given that the distance between their residence and different types of TTC stations are the same.
+Understanding these patterns is crucial for helping commuters make informed choices about which TTC service to use, especially when they have equal access to different types of stations. By providing this analysis, the paper aim to assist readers in optimizing their travel choices and enhancing their overall commuting experience.
 
 
 Analyses and findings in this paper are structured into several sections: @sec-data -- Data, @sec-results -- Results, and @sec-discussion -- Discussion. The Data section introduces the context of the datasets and examines all datasets and variables kept for analysis. The Result section focuses on visualizing and presenting the data results in Data section. The Discussion section further evaluate the implications behind the data results presented in the previous section, expands the topic beyond pure data, and touches on any weaknesses and next steps.
