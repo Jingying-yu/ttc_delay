@@ -13,12 +13,15 @@ library(testthat)
 #### Load data ####
 bus_delay <- read.csv("outputs/cleaned_data/bus/bus_delay.csv")
 weekday_bus_delay <- read.csv("outputs/cleaned_data/bus/weekday_bus_delay.csv")
+bus_delay_rush <- read.csv("outputs/cleaned_data/bus/bus_delay_rush.csv")
 
 streetcar_delay <- read.csv("outputs/cleaned_data/streetcar/streetcar_delay.csv")
 weekday_streetcar_delay <- read.csv("outputs/cleaned_data/streetcar/weekday_streetcar_delay.csv")
+streetcar_delay_rush <- read.csv("outputs/cleaned_data/bus/streetcar_delay_rush.csv")
 
 subway_delay <- read.csv("outputs/cleaned_data/subway/subway_delay.csv")
 weekday_subway_delay <- read.csv("outputs/cleaned_data/subway/weekday_subway_delay.csv")
+subway_delay_rush <- read.csv("outputs/cleaned_data/bus/subway_delay_rush.csv")
 subway_delay_code <- read.csv("outputs/cleaned_data/subway_delay_code.csv")
 
 #### Test data ####
