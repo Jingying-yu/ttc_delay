@@ -17,7 +17,7 @@ bibliography: references.bib
 #| include: false
 #| warning: false
 #| message: false
-# load librarys and datasets
+# load libraries and datasets
 library(tidyverse)
 library(dplyr)
 library(knitr)
@@ -32,9 +32,9 @@ subway_delay_code <- read.csv(here::here("inputs/data/cleaned_data/subway_delay_
 
 ```
 
-
 # Introduction
-Public transportation serves as the transportation backbone for city residents, facilitating the daily commute of millions of people. For office workers, students, and the elderly, selecting the appropriate TTC service is crucial in maintaining a reliable and efficient schedule. Despite the importance of this choice, there has been limited effort to evaluate the reliability of different TTC services to guide commuters’ choices.
+
+Public transportation serves as the transportation backbone for city  residents, facilitating the daily commute of millions of people. For office workers, students, and the elderly, selecting the appropriate TTC service is crucial in maintaining a reliable and efficient schedule. Despite the importance of this choice, there has been limited effort to evaluate the reliability of different TTC services to guide commuters’choices.
 
 Publicly accessible TTC delay data can be tracked back to 2014 on the @OpenDataToronto portal, yet a comprehensive visualization of how each type of service -- bus, streetcar, and subway -— performs in terms of delay time remains narrowly explored. This paper addresses this gap by using data from the TTC delay data to analyze and visualize delay patterns across different services.
 
@@ -42,26 +42,29 @@ This paper specifically focuses on TTC bus, streetcar, and subway delay data fro
 
 Understanding these patterns is crucial for helping commuters make informed choices about which TTC service to use, especially when they have equal access to different types of stations. By providing this analysis, the paper aim to assist readers in optimizing their travel choices and enhancing their overall commuting experience.
 
-
-Analyses and findings in this paper are structured into several sections: @sec-data -- Data, @sec-results -- Results, and @sec-discussion -- Discussion. The Data section introduces the context of the datasets and examines all datasets and variables kept for analysis. The Result section focuses on visualizing and presenting the data results in Data section. The Discussion section further evaluate the implications behind the data results presented in the previous section, expands the topic beyond pure data, and touches on any weaknesses and next steps.
-
+Analyses and findings in this paper are structured into several sections: @sec-data -- Data, @sec-results -- Results, and @sec-discussion -- Discussion. The Data section introduces the context
+of the datasets and examines all datasets and variables kept for analysis. The Result section focuses on visualizing and presenting the data results in Data section. The Discussion section further evaluate the implications behind the data results presented in the previous section, expands the topic beyond pure data, and touches on any weaknesses and next steps.
 
 # Data {#sec-data}
-Where the data comes from
-- All data used for and throughout the paper are extracted from Open Data Toronto Portal [@OpenDataToronto]. TTC Bus Delay data [@Bus], TTC Streetcar Delay [@Streetcar], TTC Subway Delay [@Subway] and TTC Subway Delay Codes [@Subway] are retrieved to compare the delay magnitudes of different services. Data is cleaned and analyzed using the open source statistical programming language R [@citeR] and supporting packages tidyverse [@tidyverse], janitor [@janitor], dplyr [@dplyr], hms [@hms], ggplot2 [@ggplot2], patchwork [@patchwork], and knitr [@knitr].
 
-For all delay dataset, only data in 2023 were chosen. There are three main reasons for this choice:
+Where the data comes from - All data used for and throughout the paper are extracted from Open Data Toronto Portal [@OpenDataToronto]. TTC Bus Delay data [@Bus], TTC Streetcar Delay [@Streetcar], TTC Subway Delay [@Subway] and TTC Subway Delay Codes [@Subway] are retrieved to compare the delay magnitudes of different services. Data is cleaned and analyzed using the open source statistical programming language R [@citeR] and supporting packages tidyverse [@tidyverse], janitor [@janitor], dplyr [@dplyr], hms [@hms], ggplot2 [@ggplot2], patchwork [@patchwork], and knitr [@knitr].
+\
+\
+For all delay dataset, only data in 2023 were chosen. There are three
+main reasons for this choice:
 
-1. 2023 data is the most recent full-year data and offers the best reference for current (2024) delay patterns. 
-2. COVID-19 impacted TTC operating capacity and styles in other years close to 2024. 
-3. data from earlier years (before 2020) were structured very differently.
+**1.** 2023 data is the most recent full-year data and offers the best reference for current (2024) delay patterns.
+
+**2.** COVID-19 impacted TTC operating capacity and styles in other years close to 2024.
+
+**3.** data from earlier years (before 2020) were structured very differently.
 
 Therefore only 2023 delay data were chosen in this paper.
 
-
 ## TTC Bus Delay {#sec-data-bus}
-source of data (brief)
-structure of data & important attributes
+
+source of data (brief) structure of data & important attributes
+
 why are these attributes kept for analysis (measurement)
 
 ```{r}
@@ -74,10 +77,10 @@ sample_bus_delay <- head(bus_delay, n = 3)
 knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay"), align = c("l","c", "c", "c", "c","c", "c"))
 ```
 
-
 ## TTC Streetcar Delay {#sec-data-streetcar}
-source of data (brief)
-structure of data & important attributes
+
+source of data (brief) structure of data & important attributes 
+
 why are these attributes kept for analysis (measurement)
 
 ```{r}
@@ -92,13 +95,14 @@ knitr::kable(sample_streetcar_delay,
              col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay"), align = c("l","c", "c", "c", "c", "c", "c")) 
 ```
 
-
 ## TTC Subway Delay {#sec-data-subway}
+
 source of data (brief)
 
 ### Delay Code {#sec-data-code}
-purpose of extra dataset
-how it is related to subway_delay
+
+purpose of extra dataset how it is related to subway_delay
+
 ```{r}
 #| label: tbl-subway-code
 #| tbl-cap: Sample of TTC Subway Delay Code
@@ -111,9 +115,11 @@ knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description")
 ```
 
 ### Delay Data
-structure of data & important attributes
-why are these attributes kept for analysis (measurement)
-mention "code" column
+
+structure of data & important attributes 
+
+why are these attributes kept for analysis (measurement) mention "code" column
+
 ```{r}
 #| label: tbl-subway-delay
 #| tbl-cap: Sample of Cleaned TTC Subway Delay Dataset
@@ -125,11 +131,7 @@ sample_subway_delay <- head(subway_delay, n = 3)
 knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Station", "Delay Code", "Min Delayed", "Line"), align = c("l","c", "c", "c", "c","c", "c"))
 ```
 
-
-
-# Results {#sec-result}
-
-
+# Results {#sec-results}
 
 ## Highest Number of Total Delayed
 
@@ -154,10 +156,10 @@ ggplot(delay_count, aes(x = service_type, y = num_delay, fill = service_type)) +
 ```
 
 ## Most Delayed during Weekday
-Define Rush Hours:
-  Rush Hours: 
-  •	Morning Rush-Hour: Approximately 7:00 AM to 9:00 AM
-	•	Evening Rush-Hour: Approximately 4:00 PM to 7:00 PM
+
+Define Rush Hours: Rush Hours: 
+• Morning Rush-Hour: Approximately 7:00 AM to 9:00 AM 
+• Evening Rush-Hour: Approximately 4:00 PM to 7:00 PM
 
 Present Results During Rush Hours & at Off-Peak Hours
 
@@ -169,7 +171,6 @@ weekday_bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay
 weekday_streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay.csv"))
 weekday_subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway/subway_delay.csv"))
 ```
-
 
 ```{r}
 #| label: fig-weekday
@@ -210,6 +211,7 @@ sum_graph + avg_graph
 ```
 
 ## Most Delayed during Rush-Hours
+
 ```{r}
 #| echo: false
 #| message: false
@@ -265,8 +267,10 @@ morning_rush + evening_rush
 ```
 
 ## Most Popular Delay Reasons
-- 1 table for all three services
-- separate into rush & off-peak hours
+
+-   1 table for all three services
+-   separate into rush & off-peak hours
+
 ```{r}
 #| label: tbl-reason
 #| tbl-cap: Top 5 Most Popular Reason for Delay
@@ -293,8 +297,10 @@ knitr::kable(reason_delay, col.names = c("Bus", "Streetcar", "Subway"), align = 
 ```
 
 ## Most Popular Delayed Lines
-- 1 table for all three services
-- separate into rush & off-peak hours
+
+-   1 table for all three services
+-   separate into rush & off-peak hours
+
 ```{r}
 #| label: tbl-lines
 #| tbl-cap: Most delayed Lines for each TTC Service
@@ -317,36 +323,27 @@ colnames(most_delay_transposed) <- most_delay_data$service_type
 knitr::kable(most_delay_transposed, col.names = colnames(most_delay_transposed), align = "c")
 ```
 
-
 # Discussion {#sec-discussion}
 
 ## TTC Service Prices {#sec-price}
-- one-fare
+-   one-fare
 
-## Correlation between Delay and Direction of Travel
-- Financial District
-- Midtown Direction
+## Importance of TTC Services
+- capacity of TTC daily TTC service capacities
+- rush-hour traffic
 
 ## TTC Service Amenities
+
 - The PATH (for financial district)
 - AC in Summer & Winter
 
 ## Errors in analysis, Limitations and Next Steps
-
-
-
-
+- only included 2023 data, should include more years for fairer inspection
+- unable to distinguish between on-time rate for different district
+- next step: explore GO services (GO trains)
 
 # Conclusion {#sec-conclusion}
 
-
-
-
-
-
 \newpage
 
-
 # References
-
-
