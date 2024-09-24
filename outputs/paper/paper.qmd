@@ -340,7 +340,7 @@ knitr::kable(most_delay_transposed, col.names = colnames(most_delay_transposed),
 # Discussion {#sec-discussion}
 
 ## TTC Service Prices {#sec-price}
--   one-fare
+-   all TTC services are the same price (one-fare)
 
 ## Importance of TTC Services
 - capacity of TTC daily TTC service capacities
