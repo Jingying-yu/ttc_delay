@@ -35,20 +35,39 @@ subway_delay_code <- read.csv(here::here("inputs/data/cleaned_data/subway_delay_
 
 
 # Introduction
+1) broader context to motivate
+- Public transportation is an important part of urban life, it is responsible for transporting millions of people around the city everyday. Choosing the correct TTC service offers a more stable timetable for office workers, student, and the elderly alike.
 
+2) some detail about what the paper is about; a clear gap that needs to be filled
+- TTC data has been publicly available since 2014, this paper seeks to use these open-sourced data to visualize how each type of TTC service performs through their delay time. 
+- TTC bus, streetcar, and subway delay data are all collected through @OpenDataToronto data portal.
+
+3) what was done
+- TTC bus, streetcar, and subway delay data in 2023 were extracted and compared to determine the TTC service type that offers the least amount of delay during weekday rush-hours.
+
+4) what was found
+- TTC subways has a history of offering the least average delay in 2023.
+
+5) why it is important
+- assist readers in choosing between different TTC services given that the distance between their residence and different types of TTC stations are the same.
 
 
 Analyses and findings in this paper are structured into several sections: @sec-data -- Data, @sec-results -- Results, and @sec-discussion -- Discussion. The Data section introduces the context of the datasets and examines all datasets and variables kept for analysis. The Result section focuses on visualizing and presenting the data results in Data section. The Discussion section further evaluate the implications behind the data results presented in the previous section, expands the topic beyond pure data, and touches on any weaknesses and next steps.
 
 
 # Data {#sec-data}
+Where the data comes from
 
+which datasets where chosen
+
+why choose 2023
 
 
 
 ## TTC Bus Delay {#sec-data-bus}
-
-
+source of data (brief)
+structure of data & important attributes
+why are these attributes kept for analysis (measurement)
 
 ```{r}
 #| label: tbl-bus-delay
@@ -62,7 +81,9 @@ knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Sta
 
 
 ## TTC Streetcar Delay {#sec-data-streetcar}
-
+source of data (brief)
+structure of data & important attributes
+why are these attributes kept for analysis (measurement)
 
 ```{r}
 #| label: tbl-streetcar-delay
@@ -78,8 +99,11 @@ knitr::kable(sample_streetcar_delay,
 
 
 ## TTC Subway Delay {#sec-data-subway}
+source of data (brief)
 
 ### Delay Code {#sec-data-code}
+purpose of extra dataset
+how it is related to subway_delay
 ```{r}
 #| label: tbl-subway-code
 #| tbl-cap: Sample of TTC Subway Delay Code
@@ -92,6 +116,9 @@ knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description")
 ```
 
 ### Delay Data
+structure of data & important attributes
+why are these attributes kept for analysis (measurement)
+mention "code" column
 ```{r}
 #| label: tbl-subway-delay
 #| tbl-cap: Sample of Cleaned TTC Subway Delay Dataset
@@ -102,8 +129,6 @@ sample_subway_delay <- head(subway_delay, n = 3)
 
 knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Station", "Delay Code", "Min Delayed", "Min Gap", "Bound", "Line", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
 ```
-
-## TTC Delay Comparision
 
 
 
