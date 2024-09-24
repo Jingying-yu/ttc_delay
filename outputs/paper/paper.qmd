@@ -61,14 +61,15 @@ main reasons for this choice:
 
 Therefore only 2023 delay data were chosen in this paper.
 
+
 ## TTC Bus Delay {#sec-data-bus}
 
-source of data (brief) structure of data & important attributes
+TTC bus delay data are collected and published by the Toronto Transit Commission [@Bus], with latest update in September of 2024. A total of 7 attributes of the data are kept for further evaluation: *date of recorded delay, bus route, scheduled time of arrival, scheduled day of the week (ex. Sunday, Monday, etc.), station, cause of delay,* and *total minutes delayed*. Additional data attributes, such as *vehicle number*, were excluded from the final dataset as they are less relevant to the focus of our analysis—weekday rush-hour delay patterns.
 
-why are these attributes kept for analysis (measurement)
+Please see @tbl-bus for an overview of the data.
 
 ```{r}
-#| label: tbl-bus-delay
+#| label: tbl-bus
 #| tbl-cap: Sample of Cleaned TTC Bus Delay Dataset
 #| echo: false
 
@@ -79,12 +80,13 @@ knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Sta
 
 ## TTC Streetcar Delay {#sec-data-streetcar}
 
-source of data (brief) structure of data & important attributes 
+Streetcar delay data are also collected and published by the Toronto Transit Commission [@Bus]. Latest update of this dataset occurred in September of 2024. A total of 7 attributes of the data are kept for further evaluation: *date of recorded delay, streetcar line, scheduled time of arrival, scheduled day of the week* (ex. Sunday, Monday, etc.)*, station, cause of delay,* and *total minutes delayed*. Additional data attributes, such as *time gap between current and next vehicle*, were excluded from the final dataset as they are less relevant to the focus of our analysis—weekday rush-hour delay patterns.
 
-why are these attributes kept for analysis (measurement)
+@tbl-streetcar contains an overview of streetcar delay data.
+
 
 ```{r}
-#| label: tbl-streetcar-delay
+#| label: tbl-streetcar
 #| tbl-cap: Sample of Cleaned TTC Streetcar Delay Dataset
 #| echo: false
 
@@ -97,31 +99,19 @@ knitr::kable(sample_streetcar_delay,
 
 ## TTC Subway Delay {#sec-data-subway}
 
-source of data (brief)
+Publisher of data, update cycle (last updated date)
+Streetcar delay data are also collected and published by the Toronto Transit Commission [@Bus]. Latest update of this dataset occurred in September of 2024. 
 
-### Delay Code {#sec-data-code}
+@tbl-subway contains an overview of subway delay data.
 
-purpose of extra dataset how it is related to subway_delay
+### Delay Data {#sec-subway-delay}
 
-```{r}
-#| label: tbl-subway-code
-#| tbl-cap: Sample of TTC Subway Delay Code
-#| echo: false
-#| message: false
+A total of 7 attributes of the data are kept from the 2023 subway delay data file for further evaluation: *date of recorded delay, scheduled time of arrival, scheduled day of the week* (ex. Sunday, Monday, etc.)*, station, cause of delay, total minutes delayed,* and *subway line*. One potentially confusing aspect of the subway data is the *cause of delay* attribute, which is represented as codes in the dataset.
 
-sample_subway_delay_code <- head(subway_delay_code, n = 3)
-
-knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description"), align = c("c","c"))
-```
-
-### Delay Data
-
-structure of data & important attributes 
-
-why are these attributes kept for analysis (measurement) mention "code" column
+An additional dataset containing the code descriptions -- subway delay code -- was extracted and cleaned for reference. Please see @tbl-code for a sample of subway incident codes.
 
 ```{r}
-#| label: tbl-subway-delay
+#| label: tbl-subway
 #| tbl-cap: Sample of Cleaned TTC Subway Delay Dataset
 #| echo: false
 #| message: false
@@ -131,6 +121,23 @@ sample_subway_delay <- head(subway_delay, n = 3)
 knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Station", "Delay Code", "Min Delayed", "Line"), align = c("l","c", "c", "c", "c","c", "c"))
 ```
 
+### Delay Code {#sec-data-code}
+
+The table below contains a cleaned dataset used to reference TTC subway delay causes. This delay code dataset contains two key attributes: *code*, and *code description*. Delay code data is used throughout this paper as an reference for the subway delay data discussed in the @sec-subway-delay.
+
+```{r}
+#| label: tbl-code
+#| tbl-cap: Sample of TTC Subway Delay Code
+#| fig-pos: "H"
+#| echo: false
+#| message: false
+
+sample_subway_delay_code <- head(subway_delay_code, n = 3)
+
+knitr::kable(sample_subway_delay_code, col.names = c("Code", "Code Description"), align = c("c","c"))
+```
+
+
 # Results {#sec-results}
 
 ## Highest Number of Total Delayed
@@ -138,6 +145,7 @@ knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Station"
 ```{r}
 #| label: fig-total-delay
 #| fig-cap: Visualization to show the TTC service that has the highest number of delays in year 2023
+#| fig-pos: "H"
 #| echo: false
 #| message: false
 #construct appropriate table for visualization
@@ -175,6 +183,7 @@ weekday_subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway/sub
 ```{r}
 #| label: fig-weekday
 #| fig-cap: Visualization to show the total delayed time during weekdays in 2023
+#| fig-pos: "H"
 #| echo: false
 #| message: false
 
@@ -275,6 +284,7 @@ morning_rush + evening_rush
 ```{r}
 #| label: tbl-reason
 #| tbl-cap: Top 5 Most Popular Reason for Delay
+#| fig-pos: "H"
 #| echo: false
 #| message: false
 
@@ -306,6 +316,7 @@ knitr::kable(reason_delay, col.names = c("Bus", "Streetcar", "Subway"), align = 
 ```{r}
 #| label: tbl-lines
 #| tbl-cap: Most delayed Lines for each TTC Service
+#| fig-pos: "H"
 #| echo: false
 #| message: false
 
