@@ -27,19 +27,19 @@ bus_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/bus_delay_2023.
 ### Streetcar Data ###
 
 download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/b68cb71b-44a7-4394-97e2-5d2f41462a5d/resource/472d838d-e41a-4616-a11b-585d26d59777/download/ttc-streetcar-delay-data-2023.xlsx",
-              "inputs/data/downloaded_xlsx_format/streetcar_delay_2023.xlsx", mode = "wb")
-streetcar_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/streetcar_delay_2023.xlsx")
+              "inputs/raw_data/streetcar_delay_2023.xlsx", mode = "wb")
+streetcar_delay_2023 <- read_excel("inputs/raw_data/streetcar_delay_2023.xlsx")
 
 
 
 ### Subway Data ###
 
 download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/996cfe8d-fb35-40ce-b569-698d51fc683b/resource/2fbec48b-33d9-4897-a572-96c9f002d66a/download/ttc-subway-delay-data-2023.xlsx",
-              "inputs/data/downloaded_xlsx_format/subway_delay_2023.xlsx", mode = "wb")
-subway_delay_2023 <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_2023.xlsx")
+              "inputs/raw_data/subway_delay_2023.xlsx", mode = "wb")
+subway_delay_2023 <- read_excel("inputs/raw_data/subway_delay_2023.xlsx")
 
 ## Subway Delay Code ##
 
 download.file("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/996cfe8d-fb35-40ce-b569-698d51fc683b/resource/3900e649-f31e-4b79-9f20-4731bbfd94f7/download/ttc-subway-delay-codes.xlsx", 
-              "inputs/data/downloaded_xlsx_format/subway_delay_code.xlsx", mode = "wb")
-subway_delay_code <- read_excel("inputs/data/downloaded_xlsx_format/subway_delay_code.xlsx")
+              "inputs/raw_data/subway_delay_code.xlsx", mode = "wb")
+subway_delay_code <- read_excel("inputs/raw_data/subway_delay_code.xlsx")

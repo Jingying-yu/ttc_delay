@@ -11,10 +11,15 @@
 library(testthat)
 
 #### Load data ####
-bus_delay <- read.csv("inputs/data/cleaned_data/bus_delay.csv")
-streetcar_delay <- read.csv("inputs/data/cleaned_data/streetcar_delay.csv")
-subway_delay <- read.csv("inputs/data/cleaned_data/subway_delay.csv")
-subway_delay_code <- read.csv("inputs/data/cleaned_data/subway_delay_code.csv")
+bus_delay <- read.csv("outputs/cleaned_data/bus/bus_delay.csv")
+weekday_bus_delay <- read.csv("outputs/cleaned_data/bus/weekday_bus_delay.csv")
+
+streetcar_delay <- read.csv("outputs/cleaned_data/streetcar/streetcar_delay.csv")
+weekday_streetcar_delay <- read.csv("outputs/cleaned_data/streetcar/weekday_streetcar_delay.csv")
+
+subway_delay <- read.csv("outputs/cleaned_data/subway/subway_delay.csv")
+weekday_subway_delay <- read.csv("outputs/cleaned_data/subway/weekday_subway_delay.csv")
+subway_delay_code <- read.csv("outputs/cleaned_data/subway_delay_code.csv")
 
 #### Test data ####
 
@@ -55,7 +60,18 @@ test_that("Check that dates are within 2023", {
               info = "All dates should be between 2023-01-01 and 2023-12-31")
 })
 
+# Test to check there are no NA values in the weekday dataset
+test_that("No NA values in date, time, and min_delay columns", {
+  expect_true(all(!is.na(weekday_bus_delay$date)))
+  expect_true(all(!is.na(weekday_bus_delay$time)))
+  expect_true(all(!is.na(weekday_bus_delay$min_delay)))
+})
 
+# Test to check that the 'day' column only contains weekdays
+test_that("Day column only contains Monday to Friday", {
+  valid_days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+  expect_true(all(weekday_bus_delay$day %in% valid_days))
+})
 
 
 ### Streetcar Data ###
@@ -95,7 +111,19 @@ test_that("Check that dates are within 2023", {
               info = "All dates should be between 2023-01-01 and 2023-12-31")
 })
 
+# Test for weekday
+# Check for no NA values in date, time, and min_delay columns
+test_that("No NA values in date, time, and min_delay columns for weekday_streetcar_delay", {
+  expect_true(all(!is.na(weekday_streetcar_delay$date)))
+  expect_true(all(!is.na(weekday_streetcar_delay$time)))
+  expect_true(all(!is.na(weekday_streetcar_delay$min_delay)))
+})
 
+# Test for weekday_streetcar_delay: Check that the 'day' column only contains Monday to Friday
+test_that("Day column only contains Monday to Friday in weekday_streetcar_delay", {
+  valid_days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+  expect_true(all(weekday_streetcar_delay$day %in% valid_days))
+})
 
 ### Subway Data ###
 # Test Suite for Subway Delay Dataset
@@ -134,7 +162,19 @@ test_that("Check that dates are within 2023", {
               info = "All dates should be between 2023-01-01 and 2023-12-31")
 })
 
+# Test for weekday
+# Check for no NA values in date, time, and min_delay columns
+test_that("No NA values in date, time, and min_delay columns for weekday_subway_delay", {
+  expect_true(all(!is.na(weekday_subway_delay$date)))
+  expect_true(all(!is.na(weekday_subway_delay$time)))
+  expect_true(all(!is.na(weekday_subway_delay$min_delay)))
+})
 
+# Test for weekday_subway_delay: Check that the 'day' column only contains Monday to Friday
+test_that("Day column only contains Monday to Friday in weekday_subway_delay", {
+  valid_days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+  expect_true(all(weekday_subway_delay$day %in% valid_days))
+})
 
 
 ### Subway Delay Code ###
@@ -159,3 +199,55 @@ test_that("'code' column does not contain values with leading, trailing, or mult
   expect_false(any(grepl("\\s{2,}", subway_delay_code[[1]])), info = "'code' column should not have multiple spaces between words")
 })
 
+
+
+
+
+# Define a function to check if time is within rush hour range
+is_within_rush_hour <- function(time_col) {
+  time_parsed <- as.POSIXct(time_col, format = "%H:%M", tz = "UTC")
+  morning_start <- as.POSIXct("07:00", format = "%H:%M", tz = "UTC")
+  morning_end <- as.POSIXct("09:00", format = "%H:%M", tz = "UTC")
+  evening_start <- as.POSIXct("16:00", format = "%H:%M", tz = "UTC")
+  evening_end <- as.POSIXct("19:00", format = "%H:%M", tz = "UTC")
+  
+  # Check if time falls within morning or evening rush hours
+  return((time_parsed >= morning_start & time_parsed <= morning_end) |
+           (time_parsed >= evening_start & time_parsed <= evening_end))
+}
+
+# Test for bus_delay_rush: Check for no NA values in date, time, and min_delay columns
+test_that("No NA values in date, time, and min_delay columns for bus_delay_rush", {
+  expect_true(all(!is.na(bus_delay_rush$date)))
+  expect_true(all(!is.na(bus_delay_rush$time)))
+  expect_true(all(!is.na(bus_delay_rush$min_delay)))
+})
+
+# Test for bus_delay_rush: Check that the 'time' column is within rush hour times (7-9am or 4-7pm)
+test_that("Time column only contains values between 7am to 9am or 4pm to 7pm in bus_delay_rush", {
+  expect_true(all(is_within_rush_hour(bus_delay_rush$time)))
+})
+
+# Test for streetcar_delay_rush: Check for no NA values in date, time, and min_delay columns
+test_that("No NA values in date, time, and min_delay columns for streetcar_delay_rush", {
+  expect_true(all(!is.na(streetcar_delay_rush$date)))
+  expect_true(all(!is.na(streetcar_delay_rush$time)))
+  expect_true(all(!is.na(streetcar_delay_rush$min_delay)))
+})
+
+# Test for streetcar_delay_rush: Check that the 'time' column is within rush hour times (7-9am or 4-7pm)
+test_that("Time column only contains values between 7am to 9am or 4pm to 7pm in streetcar_delay_rush", {
+  expect_true(all(is_within_rush_hour(streetcar_delay_rush$time)))
+})
+
+# Test for subway_delay_rush: Check for no NA values in date, time, and min_delay columns
+test_that("No NA values in date, time, and min_delay columns for subway_delay_rush", {
+  expect_true(all(!is.na(subway_delay_rush$date)))
+  expect_true(all(!is.na(subway_delay_rush$time)))
+  expect_true(all(!is.na(subway_delay_rush$min_delay)))
+})
+
+# Test for subway_delay_rush: Check that the 'time' column is within rush hour times (7-9am or 4-7pm)
+test_that("Time column only contains values between 7am to 9am or 4pm to 7pm in subway_delay_rush", {
+  expect_true(all(is_within_rush_hour(subway_delay_rush$time)))
+})
