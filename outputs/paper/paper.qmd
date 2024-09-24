@@ -20,7 +20,6 @@ bibliography: references.bib
 # load librarys and datasets
 library(tidyverse)
 library(dplyr)
-library(lubridate)
 library(knitr)
 library(ggplot2)
 library(hms)
@@ -49,11 +48,15 @@ Analyses and findings in this paper are structured into several sections: @sec-d
 
 # Data {#sec-data}
 Where the data comes from
+- All data used for and throughout the paper are extracted from Open Data Toronto Portal [@OpenDataToronto]. TTC Bus Delay data [@Bus], TTC Streetcar Delay [@Streetcar], TTC Subway Delay [@Subway] and TTC Subway Delay Codes [@Subway] are retrieved to compare the delay magnitudes of different services. Data is cleaned and analyzed using the open source statistical programming language R [@citeR] and supporting packages tidyverse [@tidyverse], janitor [@janitor], dplyr [@dplyr], hms [@hms], ggplot2 [@ggplot2], patchwork [@patchwork], and knitr [@knitr].
 
-which datasets where chosen
+For all delay dataset, only data in 2023 were chosen. There are three main reasons for this choice:
 
-why choose 2023
+1. 2023 data is the most recent full-year data and offers the best reference for current (2024) delay patterns. 
+2. COVID-19 impacted TTC operating capacity and styles in other years close to 2024. 
+3. data from earlier years (before 2020) were structured very differently.
 
+Therefore only 2023 delay data were chosen in this paper.
 
 
 ## TTC Bus Delay {#sec-data-bus}
@@ -68,7 +71,7 @@ why are these attributes kept for analysis (measurement)
 
 sample_bus_delay <- head(bus_delay, n = 3)
 
-knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay", "Min Gap", "Direction", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
+knitr::kable(sample_bus_delay, col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay"), align = c("l","c", "c", "c", "c","c", "c"))
 ```
 
 
@@ -86,7 +89,7 @@ sample_streetcar_delay <- head(streetcar_delay, n = 3)
 
 # Generate the table with automatic text wrapping for column names
 knitr::kable(sample_streetcar_delay, 
-             col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay", "Min Gap", "Bound", "Vehicle"), align = c("l","c", "c", "c", "c", "c", "c", "c", "c", "c")) 
+             col.names = c("Date", "Line", "Time", "Day", "Station", "Cause of Delay", "Min Delay"), align = c("l","c", "c", "c", "c", "c", "c")) 
 ```
 
 
@@ -119,7 +122,7 @@ mention "code" column
 
 sample_subway_delay <- head(subway_delay, n = 3)
 
-knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Station", "Delay Code", "Min Delayed", "Min Gap", "Bound", "Line", "Vehicle"), align = c("l","c", "c", "c", "c","c", "c", "c", "c","c"))
+knitr::kable(sample_subway_delay, col.names = c("Date", "Time", "Day", "Station", "Delay Code", "Min Delayed", "Line"), align = c("l","c", "c", "c", "c","c", "c"))
 ```
 
 
