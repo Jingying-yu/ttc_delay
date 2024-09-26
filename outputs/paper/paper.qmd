@@ -25,10 +25,10 @@ library(ggplot2)
 library(hms)
 library(patchwork)
 
-bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay.csv"))
-streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay.csv"))
-subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway/subway_delay.csv"))
-subway_delay_code <- read.csv(here::here("inputs/data/cleaned_data/subway_delay_code.csv"))
+bus_delay <- read.csv(here::here("outputs/cleaned_data/bus/bus_delay.csv"))
+streetcar_delay <- read.csv(here::here("outputs/cleaned_data/streetcar/streetcar_delay.csv"))
+subway_delay <- read.csv(here::here("outputs/cleaned_data/subway/subway_delay.csv"))
+subway_delay_code <- read.csv(here::here("outputs/cleaned_data/subway_delay_code.csv"))
 
 ```
 
@@ -38,20 +38,18 @@ Public transportation serves as the transportation backbone for city  residents,
 
 Publicly accessible TTC delay data can be tracked back to 2014 on the @OpenDataToronto portal, yet a comprehensive visualization of how each type of service -- bus, streetcar, and subway -— performs in terms of delay time remains narrowly explored. This paper addresses this gap by using data from the TTC delay data to analyze and visualize delay patterns across different services.
 
-This paper specifically focuses on TTC bus, streetcar, and subway delay data from 2023, extracting and comparing them to identify which service type experienced the least amount of delay during weekday rush hours. Throughout the paper, *rush-hour* will refers to the periods from 7:00 AM to 9:00 AM (morning rush) and 4:00 PM to 7:00 PM (evening rush). Our findings indicate that, in 2023, the TTC subway system consistently demonstrated the shortest average delays.
+This paper specifically focuses on TTC bus, streetcar, and subway delay data from 2023, extracting and comparing them to identify which service type experienced the least amount of delay during weekday rush hours. Throughout the paper, *rush-hour* refers to the periods from 7:00 AM to 9:00 AM (morning rush) and 4:00 PM to 7:00 PM (evening rush). Our findings indicate that, in 2023, the TTC subway system consistently demonstrated the shortest average delays.
 
-Understanding these patterns is crucial for helping commuters make informed choices about which TTC service to use, especially when they have equal access to different types of stations. By providing this analysis, the paper aim to assist readers in optimizing their travel choices and enhancing their overall commuting experience.
+Understanding these patterns is crucial for helping commuters make informed choices about which TTC service to use, especially when they have equal access to different types of stations. By providing this analysis, the paper aims to assist readers in optimizing their travel choices and enhancing their overall commuting experience.
 
-Analyses and findings in this paper are structured into several sections: @sec-data -- Data, @sec-results -- Results, and @sec-discussion -- Discussion. The Data section introduces the context
-of the datasets and examines all datasets and variables kept for analysis. The Result section focuses on visualizing and presenting the data results in Data section. The Discussion section further evaluate the implications behind the data results presented in the previous section, expands the topic beyond pure data, and touches on any weaknesses and next steps.
+Analyses and findings in this paper are structured into several sections: @sec-data -- Data, @sec-results -- Results, and @sec-discussion -- Discussion. The Data section introduces the context of the datasets and examines all datasets and variables kept for analysis. The Result section focuses on visualizing and presenting the data results in Data section. The Discussion section further evaluate the implications behind the data results presented in the previous section, expands the topic beyond pure data, and touches on any weaknesses and next steps.
 
 # Data {#sec-data}
 
 Where the data comes from - All data used for and throughout the paper are extracted from Open Data Toronto Portal [@OpenDataToronto]. TTC Bus Delay data [@Bus], TTC Streetcar Delay [@Streetcar], TTC Subway Delay [@Subway] and TTC Subway Delay Codes [@Subway] are retrieved to compare the delay magnitudes of different services. Data is cleaned and analyzed using the open source statistical programming language R [@citeR] and supporting packages tidyverse [@tidyverse], janitor [@janitor], dplyr [@dplyr], hms [@hms], ggplot2 [@ggplot2], patchwork [@patchwork], kableExtra [@kableExtra], and knitr [@knitr].
 
 
-For all delay dataset, only data in 2023 were chosen. There are three
-main reasons for this choice:
+For all delay datasets, only data in 2023 was chosen. There are three main reasons for this choice:
 
 >**1.** 2023 data is the most recent full-year data and offers the best reference for current (2024) delay patterns.
 
@@ -143,7 +141,7 @@ The results section provides a comprehensive analysis of TTC service delays in 2
 
 ## Highest Number of Total Delayed
 
-@fig-total-delay shows that the TTC bus service experienced the highest number of total delays in 2023, with 56,207 delays recorded, followed by the subway service with 22,949 delays, and the streetcar service with 14,413 delays. However, it is important to note that while buses are the most frequently delayed service, the number of delays doesn’t necessarily reflect the overall magnitude of delay experienced by passengers. The next section -- @sec-weekday -- will dive deeper into the average delay time experienced by passengers, specifically during rush-hours on weekdays.
+@fig-total-delay shows that the TTC bus service experienced the highest number of total delays in 2023, with 56,207 delays recorded, followed by the subway service with 22,949 delays, and the streetcar service with 14,413 delays. However, it is important to note that while buses are the most frequently delayed service, the number of delays does not necessarily reflect the overall magnitude of delay experienced by passengers. The next section -- @sec-weekday -- will dive deeper into the average delay time experienced by passengers, specifically during rush-hours on weekdays.
 
 ```{r}
 #| label: fig-total-delay
@@ -174,9 +172,9 @@ The figure below, @fig-weekday, reveals that the total weekday delay in hours wa
 #| echo: false
 #| message: false
 # Setup
-weekday_bus_delay <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay.csv"))
-weekday_streetcar_delay <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay.csv"))
-weekday_subway_delay <- read.csv(here::here("inputs/data/cleaned_data/subway/subway_delay.csv"))
+weekday_bus_delay <- read.csv(here::here("outputs/cleaned_data/bus/bus_delay.csv"))
+weekday_streetcar_delay <- read.csv(here::here("outputs/cleaned_data/streetcar/streetcar_delay.csv"))
+weekday_subway_delay <- read.csv(here::here("outputs/cleaned_data/subway/subway_delay.csv"))
 ```
 
 ```{r}
@@ -228,9 +226,9 @@ Rush hour, as defined in this paper, refers to the periods from 7:00 AM to 9:00 
 #| echo: false
 #| message: false
 # Setup
-bus_delay_rush <- read.csv(here::here("inputs/data/cleaned_data/bus/bus_delay_rush.csv"))
-streetcar_delay_rush <- read.csv(here::here("inputs/data/cleaned_data/streetcar/streetcar_delay_rush.csv"))
-subway_delay_rush <- read.csv(here::here("inputs/data/cleaned_data/subway/subway_delay_rush.csv"))
+bus_delay_rush <- read.csv(here::here("outputs/cleaned_data/bus/bus_delay_rush.csv"))
+streetcar_delay_rush <- read.csv(here::here("outputs/cleaned_data/streetcar/streetcar_delay_rush.csv"))
+subway_delay_rush <- read.csv(here::here("outputs/cleaned_data/subway/subway_delay_rush.csv"))
 ```
 
 ```{r}
@@ -340,23 +338,20 @@ knitr::kable(most_delay_transposed, col.names = colnames(most_delay_transposed),
 # Discussion {#sec-discussion}
 
 ## TTC Service Prices {#sec-price}
--   all TTC services are the same price (one-fare)
+All TTC services, whether you’re taking a bus, streetcar, or subway, operate under a one-fare system, meaning the financial cost of using any TTC service is identical. This pricing structure simplifies travel across the Greater Toronto Area (GTA), as passengers don’t need to worry about different costs when switching between services. The one-fare policy makes it easier for commuters to choose the most convenient transportation option without concern for cost differences, promoting greater accessibility and flexibility for daily travel across the city.
 
 ## Importance of TTC Services
-- capacity of TTC daily TTC service capacities
-- rush-hour traffic
+TTC services play a vital role in helping individuals navigate the GTA, providing an essential mode of transportation for millions of residents and visitors. According to the TTC’s official website [@ttc], these services have transported over 31 billion customers since their initial construction, highlighting the system’s critical role in supporting Toronto’s urban mobility. Despite the impact of the COVID-19 pandemic, the TTC has steadily regained ridership levels, currently operating at around 70% of its pre-pandemic capacity on weekdays and 75% to 90% on weekends. This re-bounce highlights the TTC’s importance in serving the city’s transportation needs, even as it continues to adjust to challenges after the pandemic.
 
 ## TTC Service Amenities
 
-- The PATH (for financial district)
-- AC in Summer & Winter
+One of the unique amenities of TTC services, particularly for subway passengers, is their integration with The PATH —- a vast underground pedestrian network that connects many downtown subway stations with offices and buildings in Toronto’s financial district. For commuters who work in buildings linked to The PATH, using subways or streetcars with direct PATH connections can provide a more convenient and sheltered travel experience, especially during extreme weather. Additionally, The PATH offers air conditioning during the summer and heating in the winter, ensuring a comfortable environment for passengers, making it a favorable choice over buses that lack such amenities. This integration highlights the advantages of certain TTC services, particularly for those commuting to downtown workplaces.
 
 ## Errors in analysis, Limitations and Next Steps
-- only included 2023 data, should include more years for fairer inspection
-- unable to distinguish between on-time rate for different district
-- next step: explore GO services (GO trains)
+The analysis presented in this paper is subject to certain limitations. Firstly, only data from 2023 was included, which may not provide a complete representation of TTC service performance over time. Including data from multiple years would offer a more comprehensive and fair evaluation of trends and patterns. Secondly, the study was unable to distinguish between on-time rates for different districts within Toronto, which limits the understanding of how delays vary across the different districts. As a next step, expanding the scope of the analysis to explore GO services, such as GO Trains, would provide a broader perspective on regional transit and allow for a comparison of how different transportation systems operate within and beyond the city.
 
 # Conclusion {#sec-conclusion}
+This paper has analyzed the delay patterns of TTC bus, streetcar, and subway services in 2023, revealing significant insights into their performance during weekday and rush-hour periods. The findings demonstrate that TTC buses experienced the highest number of delays, whereas subways consistently offered the least delay in terms of both total hours and average delay time. These results underscore the reliability of the subway as the most time-efficient option for commuters, especially during weekday rush hours. Understanding these patterns is essential for making informed transportation choices, and future research could further expand this analysis by incorporating multiple years of data and exploring other regional transit services such as GO Trains. This evaluation of TTC services will contribute to improving urban mobility and ensuring that Toronto’s public transportation system remains effective and reliable for all commuters.
 
 \newpage
 
