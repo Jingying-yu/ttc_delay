@@ -6,7 +6,7 @@ author:
 thanks: "Code and data are available at: https://github.com/Jingying-yu/ttc_delay.git"
 date: today
 date-format: long
-abstract: "This paper analyzes the magnitude of TTC delays in 2023 based on service types. TTC delay data for buses, streetcars, and subways are obtained through Open Data Toronto data portal and data is used to visualize delay magnitude during different days and hours throughout the year. We find that, although TTC streetcars offered the least number of delays in 2023, riding on TTC subways provides the least average time of delay during weekday rush-hour traffic. Our results suggest that, if the time required to arrive at one's office is the same for all TTC service options, choosing subway over other services could provide the most time stability."
+abstract: "This paper analyzes the magnitude of TTC delays in 2023 based on service types. Delay data for buses, streetcars, and subways are obtained through Open Data Toronto and the data collected are used to visualize delay magnitude during different days and hours throughout the year. We find that, although TTC streetcars offered the least number of delays in 2023, riding on TTC subways provides the least average time of delay during weekday rush-hour traffic. Our results suggest that, if the time required to arrive at one's office is the same for all TTC service options, choosing subway over other services could provide the most time stability."
 format: pdf
 toc: true
 number-sections: true
@@ -34,7 +34,7 @@ subway_delay_code <- read.csv(here::here("outputs/cleaned_data/subway_delay_code
 
 # Introduction
 
-Public transportation serves as the transportation backbone for city  residents, facilitating the daily commute of millions of people. For office workers, students, and the elderly, selecting the appropriate TTC service is crucial in maintaining a reliable and efficient schedule. Despite the importance of this choice, there has been limited effort to evaluate the reliability of different TTC services to guide commuters’choices.
+Public transits serves as the transportation backbone for city  residents, facilitating the daily commute of millions of people. For office workers, students, and the elderly, selecting the appropriate TTC service is crucial in maintaining a reliable and efficient schedule. Despite the importance of this choice, there has been limited effort to evaluate the reliability of different TTC services to guide commuters’choices.
 
 Publicly accessible TTC delay data can be tracked back to 2014 on the @OpenDataToronto portal, yet a comprehensive visualization of how each type of service -- bus, streetcar, and subway -— performs in terms of delay time remains narrowly explored. This paper addresses this gap by using data from the TTC delay data to analyze and visualize delay patterns across different services.
 
